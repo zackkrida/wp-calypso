@@ -23,51 +23,27 @@ const router = () => {
 
 	page( '/', siteSelection, setupSidebar, dashboard, makeLayout, clientRender );
 
-	page( '/backups', siteSelection, sites, setupSidebar, makeLayout, clientRender );
+	page( '/backups', siteSelection, sites, makeLayout, clientRender );
 	page( '/backups/:site', siteSelection, setupSidebar, backups, makeLayout, clientRender );
-	page(
-		'/backups/:site/detail',
-		siteSelection,
-		setupSidebar,
-		backupDetail,
-		makeLayout,
-		clientRender
-	);
-	page(
-		'/backups/:site/detail/:backupId',
-		siteSelection,
-		setupSidebar,
-		backupDetail,
-		makeLayout,
-		clientRender
-	);
-	page(
-		'/backups/:site/download',
-		siteSelection,
-		setupSidebar,
-		backupDownload,
-		makeLayout,
-		clientRender
-	);
-	page(
-		'/site/:site/backups/backups/download/:downloadId',
-		setupSidebar,
-		backupDownload,
-		makeLayout,
-		clientRender
-	);
 
-	page( '/backups/restore', siteSelection, sites, setupSidebar, makeLayout, clientRender );
 	page(
-		'/backups/:site/restore',
+		'/backups/:site/:backupId',
 		siteSelection,
 		setupSidebar,
-		backupRestore,
+		backupDetail,
 		makeLayout,
 		clientRender
 	);
 	page(
-		'/backups/:site/restore/:restoreId',
+		'/backups/:site/:backupId/download',
+		siteSelection,
+		setupSidebar,
+		backupDownload,
+		makeLayout,
+		clientRender
+	);
+	page(
+		'/backups/:site/:backupId/restore',
 		siteSelection,
 		setupSidebar,
 		backupRestore,
@@ -77,6 +53,8 @@ const router = () => {
 
 	page( '/scan', siteSelection, sites, setupSidebar, makeLayout, clientRender );
 	page( '/scan/:site', siteSelection, setupSidebar, scan, makeLayout, clientRender );
+
+	page( '/scan/history', siteSelection, sites, makeLayout, clientRender );
 	page( '/scan/:site/history', siteSelection, setupSidebar, scanHistory, makeLayout, clientRender );
 
 	page( '/settings', siteSelection, sites, setupSidebar, makeLayout, clientRender );
