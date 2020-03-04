@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 /**
  * Internal dependencies
  */
+import { getActivityLogFilter } from 'state/selectors/get-activity-log-filter';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import { requestActivityLogs } from 'state/data-getters';
 import ActivityList from '../../components/activity-list';
@@ -24,7 +25,8 @@ class BackupsPage extends Component {
 
 export default connect( state => {
 	const siteId = getSelectedSiteId( state );
-	const logs = requestActivityLogs( siteId, { group: 'rewind' } );
+	const filter = getActivityLogFilter( state, siteId );
+	const logs = requestActivityLogs( siteId, filter );
 
 	return {
 		siteId,

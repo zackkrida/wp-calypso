@@ -12,6 +12,11 @@ export type LogItemType = {
 	activityDate: string;
 	activityDescription: ActivityDescriptionPart[];
 	activityName: string;
+	actorRole: string;
+	actorType: 'Application' | 'Happiness Engineer' | 'Person';
+	actorAvatarUrl: string;
+	actorName: string;
+	actorWpcomId: number;
 };
 
 export type LogData = {
