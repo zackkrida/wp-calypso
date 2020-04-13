@@ -95,7 +95,7 @@ class ActivityCardList extends Component {
 						total={ logs.length }
 					/>
 				) }
-				{ cards }
+				<div className="activity-card-list__activity-cards"> { cards }</div>
 				{ showPagination && (
 					<Pagination
 						compact={ isMobile() }

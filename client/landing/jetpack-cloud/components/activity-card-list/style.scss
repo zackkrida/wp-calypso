@@ -1,5 +1,7 @@
-.activity-card-list .filterbar {
-    margin-bottom: 2rem;
+.activity-card-list {
+	.filterbar {
+		margin-bottom: 2rem;
+	}
 }
 
 .activity-card-list__pagination-bottom {
@@ -7,12 +9,45 @@
 }
 
 @include breakpoint( '<660px' ) {
-    .activity-card-list .filterbar__wrap.card {
-        background: transparent;
-        box-shadow: none;
-    }
+	.activity-card-list .filterbar__wrap.card {
+		background: transparent;
+		box-shadow: none;
+	}
 
-    .activity-card-list .filterbar__label {
-        margin-left: 0;
-    }
+	.activity-card-list .filterbar__label {
+		margin-left: 0;
+	}
+}
+
+.activity-card-list__activity-cards {
+	position: relative;
+
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+		// TODO: not this...
+		left: 2.11%;
+		width: 1px;
+	}
+
+	&::before {
+		top: 0;
+		height: 100%;
+		z-index: -2;
+		background: var( --color-neutral-10 );
+	}
+
+	&::after {
+		bottom: 0;
+		height: 16px;
+		z-index: -1;
+		background: var( --color-neutral-10 );
+		background: linear-gradient( var( --color-neutral-10 ), var( --color-surface-backdrop ) );
+	}
+
+	.activity-card__time {
+		z-index: 1;
+		background: var( --studio-gray-0 );
+	}
 }
