@@ -207,7 +207,7 @@ const sections = [
 	// or it'll be falsely associated with the latter section.
 	{
 		name: 'themes',
-		paths: [ '/themes', '/design' ],
+		paths: [ '/themes', '/[a-zA-Z-]+/themes', '/design' ],
 		module: 'my-sites/themes',
 		enableLoggedOut: true,
 		secondary: true,
