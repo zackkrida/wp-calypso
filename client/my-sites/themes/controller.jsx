@@ -102,7 +102,7 @@ export function fetchThemeData( context, next ) {
 }
 
 export function fetchThemeFilters( context, next ) {
-	const { store } = context;
+	const { store, lang } = context;
 
 	if ( ! isEmpty( getThemeFilters( store.getState() ) ) ) {
 		debug( 'found theme filters in cache' );
@@ -115,7 +115,14 @@ export function fetchThemeFilters( context, next ) {
 			return next();
 		}
 	} );
-	store.dispatch( requestThemeFilters() );
+
+	const params = {};
+
+	if ( lang ) {
+		params.locale = lang;
+	}
+
+	store.dispatch( requestThemeFilters( params ) );
 }
 
 // Legacy (Atlas-based Theme Showcase v4) route redirects
