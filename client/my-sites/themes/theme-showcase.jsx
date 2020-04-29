@@ -42,6 +42,7 @@ import {
 } from 'state/themes/selectors';
 import UpworkBanner from 'blocks/upwork-banner';
 import RecommendedThemes from './recommended-themes';
+import { isDefaultLocale } from 'lib/i18n-utils';
 
 /**
  * Style dependencies
@@ -186,7 +187,10 @@ class ThemeShowcase extends React.Component {
 	 * @returns {string} Theme showcase url
 	 */
 	constructUrl = ( sections ) => {
-		const { vertical, tier, filter, siteSlug, searchString } = { ...this.props, ...sections };
+		const { vertical, tier, filter, siteSlug, searchString, locale } = {
+			...this.props,
+			...sections,
+		};
 
 		const siteIdSection = siteSlug ? `/${ siteSlug }` : '';
 		const verticalSection = vertical ? `/${ vertical }` : '';
@@ -194,8 +198,8 @@ class ThemeShowcase extends React.Component {
 
 		let filterSection = filter ? `/filter/${ filter }` : '';
 		filterSection = filterSection.replace( /\s/g, '+' );
-
-		const url = `/themes${ verticalSection }${ tierSection }${ filterSection }${ siteIdSection }`;
+		const localePrefix = locale && ! isDefaultLocale( locale ) ? `/${ locale }` : '';
+		const url = `${ localePrefix }/themes${ verticalSection }${ tierSection }${ filterSection }${ siteIdSection }`;
 		return buildRelativeSearchUrl( url, searchString );
 	};
 
