@@ -186,14 +186,18 @@ const DomainPicker: FunctionComponent< Props > = ( {
 						</div>
 					</div>
 					<div className="domain-picker__search">
-						<SearchIcon />
-						<TextControl
-							hideLabelFromVision
-							label={ label }
-							placeholder={ label }
-							onChange={ setDomainSearch }
-							value={ domainSearch }
-						/>
+						{ /* Form is to allow hiding keyboard on "submit" */ }
+						<form onSubmit={ setDomainSearch }>
+							<SearchIcon />
+							<TextControl
+								hideLabelFromVision
+								inputmode="search"
+								label={ label }
+								onChange={ setDomainSearch }
+								placeholder={ label }
+								value={ domainSearch }
+							/>
+						</form>
 					</div>
 					<div className="domain-picker__body">
 						{ showDomainCategories && (
