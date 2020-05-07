@@ -25,19 +25,12 @@ let mockReturnValues = {};
 function remock( newReturnValues ) {
 	mockReturnValues = Object.assign(
 		{
-			isDefaultLocale: true,
 			isSectionIsomorphic: true,
 			configServerSideRender: true,
 		},
 		newReturnValues
 	);
 }
-
-jest.mock( 'lib/i18n-utils', () => {
-	return {
-		isDefaultLocale: () => mockReturnValues.isDefaultLocale,
-	};
-} );
 
 jest.mock( 'state/ui/selectors', () => {
 	return {
@@ -115,13 +108,6 @@ describe( 'shouldServerSideRender', () => {
 		expect( shouldServerSideRender( ssrEnabledContext ) ).toBe( true );
 
 		remock( { isSectionIsomorphic: false } );
-		expect( shouldServerSideRender( ssrEnabledContext ) ).toBe( false );
-	} );
-
-	test( 'isDefaultLocale should alter the result', () => {
-		expect( shouldServerSideRender( ssrEnabledContext ) ).toBe( true );
-
-		remock( { isDefaultLocale: false } );
 		expect( shouldServerSideRender( ssrEnabledContext ) ).toBe( false );
 	} );
 } );
