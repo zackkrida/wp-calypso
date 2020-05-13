@@ -217,7 +217,7 @@ const sections = [
 	},
 	{
 		name: 'theme',
-		paths: [ '/theme' ],
+		paths: [ '/theme', '/[a-zA-Z-]+/theme' ],
 		module: 'my-sites/theme',
 		enableLoggedOut: true,
 		secondary: false,
