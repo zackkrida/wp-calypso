@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { find, isString, map, pickBy, includes, endsWith } from 'lodash';
+import { find, isString, map, pickBy, includes, endsWith, invert } from 'lodash';
 import i18n, { getLocaleSlug } from 'i18n-calypso';
 
 /**
@@ -167,6 +167,7 @@ const localesToSubdomains = {
 	'zh-sg': 'zh-cn',
 	kr: 'ko',
 };
+export const subdomainsToLocales = invert( localesToSubdomains );
 
 const setLocalizedUrlHost = ( hostname, validLocales = [] ) => ( urlParts, localeSlug ) => {
 	if ( typeof validLocales === 'string' ) {

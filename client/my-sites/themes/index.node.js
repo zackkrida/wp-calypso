@@ -19,12 +19,12 @@ import {
 	redirectToThemeDetails,
 } from './controller';
 import { validateFilters, validateVertical } from './validate-filters';
-import { getLanguage, getLanguageRouteParam } from 'lib/i18n-utils';
+import { getLanguage, getLanguageRouteParam, subdomainsToLocales } from 'lib/i18n-utils';
 import { setLocaleRawData } from 'state/ui/language/actions';
 
 const translationsCache = {};
 
-function setupLocale( context, next ) {
+export function setupLocale( context, next ) {
 	if ( ! context.params.lang ) {
 		const localeDataPlaceholder = { '': {} };
 		context.store.dispatch( setLocaleRawData( localeDataPlaceholder ) ); // Reset to default locale
@@ -33,7 +33,8 @@ function setupLocale( context, next ) {
 		return;
 	}
 
-	const language = getLanguage( context.params.lang );
+	const langSlug = subdomainsToLocales[ context.params.lang ] || context.params.lang;
+	const language = getLanguage( langSlug );
 
 	if ( language ) {
 		context.lang = language.langSlug;
