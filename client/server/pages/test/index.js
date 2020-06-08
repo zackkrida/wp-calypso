@@ -123,6 +123,7 @@ jest.mock( 'landing/gutenboarding/section', () => ( {
  */
 import mockFs from 'mock-fs';
 import cloneDeep from 'lodash/cloneDeep';
+import { matchesUA } from 'browserslist-useragent';
 
 /**
  * Internal dependencies
@@ -403,6 +404,7 @@ const assertDefaultContext = ( { url, entry } ) => {
 		const { request } = await app.run();
 		expect( request.context.commitSha ).toBe( 'abcabc' );
 	} );
+};
 
 	it( 'sets the commit sha to "(unknown)"', async () => {
 		const { request } = await app.run();
@@ -1083,6 +1085,207 @@ const assertSection = ( { url, entry, sectionName, secondaryContent, sectionGrou
 
 	describe( 'default context', () => {
 		assertDefaultContext( { url, entry } );
+	} );
+
+	it( 'sets lang to the default', async () => {
+		const { request } = await runApp( { request: { url } } );
+		expect( request.context.lang ).toEqual( 'en' );
+	} );
+
+	it( 'sets the entrypoint', async () => {
+		const { request } = await runApp( { request: { url } } );
+		expect( request.context.entrypoint ).toEqual( {
+			js: [ `/calypso/evergreen/${ entry }.1.min.js`, `/calypso/evergreen/${ entry }.2.min.js` ],
+			'css.ltr': [ `/calypso/evergreen/${ entry }.3.min.css` ],
+			'css.rtl': [ `/calypso/evergreen/${ entry }.4.min.rtl.css` ],
+		} );
+	} );
+
+	it( 'sets the manifest', async () => {
+		const { request } = await runApp( { request: { url } } );
+		expect( request.context.manifest ).toEqual( '/* webpack manifest */' );
+	} );
+
+	it( 'sets the favicon_url', async () => {
+		const { request } = await runApp( { request: { url } } );
+		expect( request.context.faviconURL ).toEqual( 'http://favicon.url/' );
+	} );
+
+	describe( 'sets the abTestHepler', () => {
+		it( 'when config is enabled', async () => {
+			withConfigEnabled( { 'dev/test-helper': true } );
+
+			const { request } = await runApp( { request: { url } } );
+
+			expect( request.context.abTestHelper ).toEqual( true );
+		} );
+
+		it( 'when config is disabled', async () => {
+			withConfigEnabled( { 'dev/test-helper': false } );
+
+			const { request } = await runApp( { request: { url } } );
+
+			expect( request.context.abTestHelper ).toEqual( false );
+		} );
+	} );
+
+	describe( 'sets the preferencesHelper', () => {
+		it( 'when config is enabled', async () => {
+			withConfigEnabled( { 'dev/preferences-helper': true } );
+
+			const { request } = await runApp( { request: { url } } );
+
+			expect( request.context.preferencesHelper ).toEqual( true );
+		} );
+
+		it( 'when config is disabled', async () => {
+			withConfigEnabled( { 'dev/preferences-helper': false } );
+
+			const { request } = await runApp( { request: { url } } );
+
+			expect( request.context.preferencesHelper ).toEqual( false );
+		} );
+	} );
+
+	it( 'sets devDocsUrl', async () => {
+		const { request } = await runApp( { request: { url } } );
+		expect( request.context.devDocsURL ).toEqual( '/devdocs' );
+	} );
+
+	it( 'sets redux store', async () => {
+		const theStore = {};
+		createReduxStore.mockImplementation( () => theStore );
+
+		const { request } = await runApp( { request: { url } } );
+
+		expect( request.context.store ).toEqual( theStore );
+	} );
+
+	it( 'sets the evergreen for evergreen browsers check in production', async () => {
+		const isolatedAppFactory = appFactoryWithCustomEnvironment( 'production', () => {
+			withEvergreenBrowser( require( 'browserslist-useragent' ).matchesUA );
+		} );
+
+		const { request } = await runApp( { app: isolatedAppFactory(), request: { url } } );
+
+		expect( request.context.addEvergreenCheck ).toEqual( true );
+	} );
+
+	describe( 'sets the target', () => {
+		const [ setNodeEnv, resetNodeEnv ] = withMockedVariable( process.env, 'NODE_ENV' );
+
+		describe( 'in development mode', () => {
+			const [ setDevTarget, resetDevTarget ] = withMockedVariable( process.env, 'DEV_TARGET' );
+
+			beforeEach( () => {
+				setNodeEnv( 'development' );
+			} );
+
+			afterEach( () => {
+				resetNodeEnv();
+				resetDevTarget();
+			} );
+
+			it( 'uses the value from DEV_TARGET ', async () => {
+				setDevTarget( 'fallback' );
+				const { request } = await runApp( { request: { url } } );
+				expect( request.context.target ).toEqual( 'fallback' );
+			} );
+
+			it( 'defaults to evergreen when DEV_TARGET is not set', async () => {
+				const { request } = await runApp( { request: { url } } );
+				expect( request.context.target ).toEqual( 'evergreen' );
+			} );
+		} );
+
+		describe( 'in production mode', () => {
+			beforeEach( () => {
+				setNodeEnv( 'production' );
+			} );
+
+			afterEach( () => {
+				resetNodeEnv();
+			} );
+
+			it( 'uses fallback if forceFallback is provided as query', async () => {
+				const { request } = await runApp( { request: { url, query: { forceFallback: true } } } );
+				expect( request.context.target ).toEqual( 'fallback' );
+			} );
+
+			it( 'serves evergreen for evergreen browsers', async () => {
+				withEvergreenBrowser();
+
+				const { request } = await runApp( { request: { url } } );
+
+				expect( request.context.target ).toEqual( 'evergreen' );
+			} );
+
+			it( 'serves fallback if the browser is not evergreen', async () => {
+				withNonEvergreenBrowser();
+
+				const { request } = await runApp( { request: { url } } );
+
+				expect( request.context.target ).toEqual( 'fallback' );
+			} );
+		} );
+
+		describe( 'in desktop mode', () => {
+			it( 'defaults to fallback in desktop mode', async () => {
+				const isolatedAppFactory = appFactoryWithCustomEnvironment( 'desktop', () => {
+					withEvergreenBrowser( require( 'browserslist-useragent' ).matchesUA );
+				} );
+
+				const { request } = await runApp( { app: isolatedAppFactory(), request: { url } } );
+
+				expect( request.context.target ).toEqual( 'fallback' );
+			} );
+
+			it( 'defaults to fallback in desktop-development mode', async () => {
+				const isolatedAppFactory = appFactoryWithCustomEnvironment( 'desktop-development', () => {
+					withEvergreenBrowser( require( 'browserslist-useragent' ).matchesUA );
+				} );
+
+				const { request } = await runApp( { app: isolatedAppFactory(), request: { url } } );
+
+				expect( request.context.target ).toEqual( 'fallback' );
+			} );
+		} );
+	} );
+
+	describe( 'uses translations chunks', () => {
+		it( 'disabled by default', async () => {
+			const { request } = await runApp( { request: { url } } );
+
+			expect( request.context.useTranslationChunks ).toEqual( false );
+		} );
+
+		it( 'when enabled in the config', async () => {
+			withConfigEnabled( {
+				'use-translation-chunks': true,
+			} );
+
+			const { request } = await runApp( { request: { url } } );
+
+			expect( request.context.useTranslationChunks ).toEqual( true );
+		} );
+
+		it( 'when enabled in the request flags', async () => {
+			const { request } = await runApp( {
+				request: { url },
+				query: { flags: 'use-translation-chunks' },
+			} );
+
+			expect( request.context.useTranslationChunks ).toEqual( true );
+		} );
+
+		it( 'when specified in the request', async () => {
+			const { request } = await runApp( {
+				request: { url },
+				query: { useTranslationChunks: true },
+			} );
+
+			expect( request.context.useTranslationChunks ).toEqual( true );
+		} );
 	} );
 };
 
