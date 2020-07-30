@@ -304,8 +304,15 @@ const webpackConfig = {
 			} ),
 		new RequireChunkCallbackPlugin(),
 		isDevelopment && new webpack.HotModuleReplacementPlugin(),
-		! config.isEnabled( 'desktop' ) &&
-			new webpack.NormalModuleReplacementPlugin( /^lib[/\\]desktop$/, 'lodash-es/noop' ),
+		...( ! config.isEnabled( 'desktop' )
+			? [
+					new webpack.NormalModuleReplacementPlugin( /^lib[/\\]desktop$/, 'lodash-es/noop' ),
+					new webpack.NormalModuleReplacementPlugin(
+						/^wp-calypso[/\\]lib[/\\]desktop$/,
+						'lodash/noop'
+					),
+			  ]
+			: [] ),
 		/*
 		 * Forcibly remove dashicon while we wait for better tree-shaking in `@wordpress/*`.
 		 */

@@ -143,7 +143,8 @@ const webpackConfig = {
 
 if ( ! config.isEnabled( 'desktop' ) ) {
 	webpackConfig.plugins.push(
-		new webpack.NormalModuleReplacementPlugin( /^lib[/\\]desktop$/, 'lodash/noop' )
+		new webpack.NormalModuleReplacementPlugin( /^lib[/\\]desktop$/, 'lodash/noop' ),
+		new webpack.NormalModuleReplacementPlugin( /^wp-calypso[/\\]lib[/\\]desktop$/, 'lodash/noop' )
 	);
 }
 
