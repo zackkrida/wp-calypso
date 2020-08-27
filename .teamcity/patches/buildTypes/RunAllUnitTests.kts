@@ -46,6 +46,38 @@ create(DslContext.projectId, BuildType({
             dockerRunParameters = "-u %env.UID%"
         }
         script {
+            name = "Code hygiene"
+            scriptContent = """
+                set -e
+                export HOME="/calypso"
+                export NODE_ENV="test"
+                
+                # Update node
+                . "${'$'}NVM_DIR/nvm.sh"
+                
+                # Prevent uncommited changes
+                DIRTY_FILES=${'$'}(git status --porcelain 2>/dev/null)
+                if [[ ! -z "${'$'}DIRTY_FILES" ]]; then
+                	echo "Repository contains uncommitted changes: "
+                	echo "${'$'}DIRTY_FILES"
+                	echo "You need to checkout the branch, run 'yarn' and commit those files."
+                	exit 1
+                fi
+                
+                # Code style
+                FILES_TO_LINT=${'$'}(git diff --name-only --diff-filter=d origin...| grep -E '^(client/|server/|packages/)' | grep -E '\.[jt]sx?${'$'}') || exit 0
+                if [[ ! -z ${'$'}FILES_TO_LINT ]]; then
+                	yarn run eslint --format junit --output-file "./test_results/eslint/results.xml" ${'$'}FILES_TO_LINT
+                fi
+                
+                # Run type checks
+                yarn run tsc --project client/landing/gutenboarding
+            """.trimIndent()
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+            dockerImage = "automattic/wp-calypso-ci:1.0.5"
+            dockerRunParameters = "-u %env.UID%"
+        }
+        script {
             name = "Run unit tests (1)"
             scriptContent = """
                 set -e
@@ -96,38 +128,6 @@ create(DslContext.projectId, BuildType({
                 # Run FSE tests
                 cd apps/full-site-editing
                 JEST_JUNIT_OUTPUT_DIR="../../test_results" yarn test:js --reporters=default --reporters=jest-junit  --maxWorkers=${'$'}JEST_MAX_WORKERS
-            """.trimIndent()
-            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-            dockerImage = "automattic/wp-calypso-ci:1.0.5"
-            dockerRunParameters = "-u %env.UID%"
-        }
-        script {
-            name = "Code hygiene"
-            scriptContent = """
-                set -e
-                export HOME="/calypso"
-                export NODE_ENV="test"
-                
-                # Update node
-                . "${'$'}NVM_DIR/nvm.sh"
-                
-                # Prevent uncommited changes
-                DIRTY_FILES=${'$'}(git status --porcelain 2>/dev/null)
-                if [[ ! -z "${'$'}DIRTY_FILES" ]]; then
-                	echo "Repository contains uncommitted changes: "
-                	echo "${'$'}DIRTY_FILES"
-                	echo "You need to checkout the branch, run 'yarn' and commit those files."
-                	exit 1
-                fi
-                
-                # Code style
-                FILES_TO_LINT=${'$'}(git diff --name-only --diff-filter=d origin...| grep -E '^(client/|server/|packages/)' | grep -E '\.[jt]sx?${'$'}') || exit 0
-                if [[ ! -z ${'$'}FILES_TO_LINT ]]; then
-                	yarn run eslint --format junit --output-file "./test_results/eslint/results.xml" ${'$'}FILES_TO_LINT
-                fi
-                
-                # Run type checks
-                yarn run tsc --project client/landing/gutenboarding
             """.trimIndent()
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
