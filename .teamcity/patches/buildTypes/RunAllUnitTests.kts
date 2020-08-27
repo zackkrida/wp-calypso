@@ -17,6 +17,12 @@ create(DslContext.projectId, BuildType({
     name = "Run all unit tests"
     description = "test"
 
+    artifactRules = """
+        artifacts/o2-blocks
+        artifacts/notifications
+        artifacts/wpcom-block-editor
+    """.trimIndent()
+
     vcs {
         root(DslContext.settingsRoot)
 
