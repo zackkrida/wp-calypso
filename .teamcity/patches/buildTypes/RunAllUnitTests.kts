@@ -49,6 +49,7 @@ create(DslContext.projectId, BuildType({
             name = "Code hygiene"
             scriptContent = """
                 set -e
+                set -x
                 export HOME="/calypso"
                 export NODE_ENV="test"
                 
@@ -65,8 +66,8 @@ create(DslContext.projectId, BuildType({
                 fi
                 
                 # Code style
-                FILES_TO_LINT=${'$'}(git diff --name-only --diff-filter=d origin...| grep -E '^(client/|server/|packages/)' | grep -E '\.[jt]sx?${'$'}') || exit 0
-                if [[ ! -z ${'$'}FILES_TO_LINT ]]; then
+                FILES_TO_LINT=${'$'}(git diff --name-only --diff-filter=d origin... | grep -E '^(client/|server/|packages/)' | grep -E '\.[jt]sx?${'$'}')
+                if [[ ! -z "${'$'}FILES_TO_LINT" ]]; then
                 	yarn run eslint --format junit --output-file "./test_results/eslint/results.xml" ${'$'}FILES_TO_LINT
                 fi
                 
