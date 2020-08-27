@@ -31,6 +31,12 @@ create(DslContext.projectId, BuildType({
 
     steps {
         script {
+            name = "Prepare GIT"
+            scriptContent = "git fetch origin master"
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+            dockerRunParameters = "-u %env.UID%"
+        }
+        script {
             name = "Prepare environment"
             scriptContent = """
                 set -e
@@ -170,12 +176,6 @@ create(DslContext.projectId, BuildType({
             """.trimIndent()
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
-            dockerRunParameters = "-u %env.UID%"
-        }
-        script {
-            name = "Prepare GIT"
-            scriptContent = "git fetch origin master"
-            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerRunParameters = "-u %env.UID%"
         }
     }
