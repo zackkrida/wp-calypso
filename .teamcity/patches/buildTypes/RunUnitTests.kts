@@ -2,6 +2,7 @@ package patches.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
@@ -12,15 +13,19 @@ To apply the patch, create a buildType with id = 'RunUnitTests'
 in the root project, and delete the patch script.
 */
 create(DslContext.projectId, BuildType({
-    templates(RelativeId("run_unit_tests"))
     id("RunUnitTests")
     name = "Run unit tests"
     description = "test"
 
+    vcs {
+        root(DslContext.settingsRoot)
+
+        cleanCheckout = true
+    }
+
     steps {
         script {
             name = "Prepare environment"
-            id = "RUNNER_13"
             scriptContent = """
                 set -e
                 export JEST_JUNIT_OUTPUT_DIR="./test_results/client"
@@ -44,7 +49,6 @@ create(DslContext.projectId, BuildType({
         }
         script {
             name = "Run client tests"
-            id = "RUNNER_389"
             scriptContent = "yarn test-client --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
@@ -54,10 +58,11 @@ create(DslContext.projectId, BuildType({
 
     features {
         feature {
-            id = "BUILD_EXT_362"
             type = "xml-report-plugin"
             param("xmlReportParsing.reportType", "junit")
             param("xmlReportParsing.reportDirs", "test_results/**/*.xml")
+        }
+        perfmon {
         }
     }
 }))
