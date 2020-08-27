@@ -106,7 +106,7 @@ create(DslContext.projectId, BuildType({
                 
                 # Run FSE tests
                 cd apps/full-site-editing
-                JEST_JUNIT_OUTPUT_DIR="../../test_results" yarn test:js --reporters=default --reporters=jest-junit  --maxWorkers=${'$'}JEST_MAX_WORKERS
+                JEST_JUNIT_OUTPUT_DIR="../../test_results/fse" yarn test:js --reporters=default --reporters=jest-junit  --maxWorkers=${'$'}JEST_MAX_WORKERS
             """.trimIndent()
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
