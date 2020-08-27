@@ -110,25 +110,26 @@ create(DslContext.projectId, BuildType({
             name = "Build artifacts"
             scriptContent = """
                 set -e
-                export JEST_JUNIT_OUTPUT_NAME="results.xml"
                 export HOME="/calypso"
                 export NODE_ENV="test"
                 
                 # Update node
                 . "${'$'}NVM_DIR/nvm.sh"
                 
-                # Run client tests
-                JEST_JUNIT_OUTPUT_DIR="./test_results/client" yarn test-client --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
+                # Build o2-blocks
+                pushd apps/o2-blocks/
+                yarn build --output-path="../../artifacts/o2-blocks"
+                popd
                 
-                # Run packages tests
-                JEST_JUNIT_OUTPUT_DIR="./test_results/packages" yarn test-packages --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
+                # Build wpcom-block-editor
+                pushd apps/wpcom-block-editor/
+                yarn build --output-path="../../artifacts/wpcom-block-editor"
+                popd
                 
-                # Run server tests
-                JEST_JUNIT_OUTPUT_DIR="./test_results/server" yarn test-server --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
-                
-                # Run FSE tests
-                cd apps/full-site-editing
-                JEST_JUNIT_OUTPUT_DIR="../../test_results" yarn test:js --reporters=default --reporters=jest-junit  --maxWorkers=${'$'}JEST_MAX_WORKERS
+                # Build notifications
+                pushd apps/notifications/
+                yarn build --output-path="../../artifacts/notifications"
+                popd
             """.trimIndent()
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
