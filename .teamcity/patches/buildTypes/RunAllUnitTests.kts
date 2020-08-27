@@ -66,7 +66,7 @@ create(DslContext.projectId, BuildType({
                 fi
                 
                 # Code style
-                git branches
+                git branch
                 git remote -v show
                 git log -1
                 FILES_TO_LINT=${'$'}(git diff --name-only --diff-filter=d origin... | grep -E '^(client/|server/|packages/)' | grep -E '\.[jt]sx?${'$'}')
