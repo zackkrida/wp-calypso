@@ -58,7 +58,7 @@ create(DslContext.projectId, BuildType({
                 
                 # Prevent uncommited changes
                 DIRTY_FILES=${'$'}(git status --porcelain 2>/dev/null)
-                if [[ ! -z "${'$'}DIRTY_FILES" ]]; then
+                if [ ! -z "${'$'}DIRTY_FILES" ]; then
                 	echo "Repository contains uncommitted changes: "
                 	echo "${'$'}DIRTY_FILES"
                 	echo "You need to checkout the branch, run 'yarn' and commit those files."
@@ -67,7 +67,7 @@ create(DslContext.projectId, BuildType({
                 
                 # Code style
                 FILES_TO_LINT=${'$'}(git diff --name-only --diff-filter=d origin... | grep -E '^(client/|server/|packages/)' | grep -E '\.[jt]sx?${'$'}')
-                if [[ ! -z "${'$'}FILES_TO_LINT" ]]; then
+                if [ ! -z "${'$'}FILES_TO_LINT" ]; then
                 	yarn run eslint --format junit --output-file "./test_results/eslint/results.xml" ${'$'}FILES_TO_LINT
                 fi
                 
