@@ -133,36 +133,6 @@ create(DslContext.projectId, BuildType({
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
             dockerRunParameters = "-u %env.UID%"
         }
-        script {
-            name = "Build artifacts (1)"
-            scriptContent = """
-                set -e
-                export JEST_JUNIT_OUTPUT_NAME="results.xml"
-                export HOME="/calypso"
-                export NODE_ENV="test"
-                
-                # Update node
-                . "${'$'}NVM_DIR/nvm.sh"
-                
-                # Build notifications
-                pushd apps/notifications/
-                yarn build --output-path="../../artifacts/notifications"
-                popd
-                
-                # Build o2-blocks
-                pushd apps/o2-blocks/
-                yarn build --output-path="../../artifacts/o2-blocks"
-                popd
-                
-                # Build wpcom-block-editor
-                pushd apps/wpcom-block-editor/
-                yarn build --output-path="../../artifacts/wpcom-block-editor"
-                popd
-            """.trimIndent()
-            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-            dockerImage = "automattic/wp-calypso-ci:1.0.5"
-            dockerRunParameters = "-u %env.UID%"
-        }
     }
 
     features {
