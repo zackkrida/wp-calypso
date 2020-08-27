@@ -106,7 +106,7 @@ create(DslContext.projectId, BuildType({
             dockerRunParameters = "-u %env.UID%"
         }
         script {
-            name = "Run unit tests (1)"
+            name = "Build artifacts"
             scriptContent = """
                 set -e
                 export JEST_JUNIT_OUTPUT_NAME="results.xml"
