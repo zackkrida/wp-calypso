@@ -14,7 +14,7 @@ in the root project, and delete the patch script.
 */
 create(DslContext.projectId, BuildType({
     id("RunUnitTests")
-    name = "Run unit tests"
+    name = "Run all tests"
     description = "test"
 
     vcs {
