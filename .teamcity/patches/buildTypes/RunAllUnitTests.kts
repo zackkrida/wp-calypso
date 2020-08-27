@@ -57,6 +57,32 @@ create(DslContext.projectId, BuildType({
             dockerRunParameters = "-u %env.UID%"
         }
         script {
+            name = "Prepare environment (1)"
+            scriptContent = """
+                set -e
+                export HOME="/calypso"
+                export NODE_ENV="test"
+                export CHROMEDRIVER_SKIP_DOWNLOAD=true
+                export PUPPETEER_SKIP_DOWNLOAD=true
+                export npm_config_cache=${'$'}(yarn cache dir)
+                
+                # Update node
+                . "${'$'}NVM_DIR/nvm.sh" --install
+                nvm use
+                
+                git --version
+                git rev-parse HEAD
+                git rev-parse refs/remotes/origin/master
+                git rev-parse origin
+                
+                # Install modules
+                yarn install
+            """.trimIndent()
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+            dockerImage = "automattic/wp-calypso-ci:1.0.5"
+            dockerRunParameters = "-u %env.UID%"
+        }
+        script {
             name = "Code hygiene"
             scriptContent = """
                 set -e
