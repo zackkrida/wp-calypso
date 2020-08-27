@@ -19,7 +19,7 @@ create(DslContext.projectId, BuildType({
 
     steps {
         script {
-            name = "Run client tests"
+            name = "Prepare environment"
             id = "RUNNER_13"
             scriptContent = """
                 set -e
@@ -37,9 +37,6 @@ create(DslContext.projectId, BuildType({
                 
                 # Install modules
                 yarn install
-                
-                # Run tests
-                yarn test-client --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
             """.trimIndent()
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
