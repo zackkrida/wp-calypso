@@ -31,12 +31,6 @@ create(DslContext.projectId, BuildType({
 
     steps {
         script {
-            name = "Prepare GIT"
-            scriptContent = "git fetch origin master"
-            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-            dockerRunParameters = "-u %env.UID%"
-        }
-        script {
             name = "Prepare environment"
             scriptContent = """
                 set -e
