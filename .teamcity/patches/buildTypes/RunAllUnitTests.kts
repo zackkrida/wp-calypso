@@ -105,6 +105,34 @@ create(DslContext.projectId, BuildType({
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
             dockerRunParameters = "-u %env.UID%"
         }
+        script {
+            name = "Run unit tests (1)"
+            scriptContent = """
+                set -e
+                export JEST_JUNIT_OUTPUT_NAME="results.xml"
+                export HOME="/calypso"
+                export NODE_ENV="test"
+                
+                # Update node
+                . "${'$'}NVM_DIR/nvm.sh"
+                
+                # Run client tests
+                JEST_JUNIT_OUTPUT_DIR="./test_results/client" yarn test-client --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
+                
+                # Run packages tests
+                JEST_JUNIT_OUTPUT_DIR="./test_results/packages" yarn test-packages --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
+                
+                # Run server tests
+                JEST_JUNIT_OUTPUT_DIR="./test_results/server" yarn test-server --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
+                
+                # Run FSE tests
+                cd apps/full-site-editing
+                JEST_JUNIT_OUTPUT_DIR="../../test_results" yarn test:js --reporters=default --reporters=jest-junit  --maxWorkers=${'$'}JEST_MAX_WORKERS
+            """.trimIndent()
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+            dockerImage = "automattic/wp-calypso-ci:1.0.5"
+            dockerRunParameters = "-u %env.UID%"
+        }
     }
 
     features {
