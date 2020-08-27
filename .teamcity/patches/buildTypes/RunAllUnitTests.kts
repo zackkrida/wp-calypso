@@ -49,7 +49,13 @@ create(DslContext.projectId, BuildType({
         }
         script {
             name = "Run client tests"
-            scriptContent = "yarn test-client --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent"
+            scriptContent = """
+                # Update node
+                . "${'$'}NVM_DIR/nvm.sh" --install
+                nvm use
+                
+                yarn test-client --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
+            """.trimIndent()
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
             dockerRunParameters = "-u %env.UID%"
