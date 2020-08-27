@@ -66,7 +66,6 @@ create(DslContext.projectId, BuildType({
                 fi
                 
                 # Code style
-                git fetch origin master:refs/remotes/origin/master
                 FILES_TO_LINT=${'$'}(git diff --name-only --diff-filter=d refs/remotes/origin/master...HEAD | grep -E '^(client/|server/|packages/)' | grep -E '\.[jt]sx?${'$'}')
                 if [ ! -z "${'$'}FILES_TO_LINT" ]; then
                 	yarn run eslint --format junit --output-file "./test_results/eslint/results.xml" ${'$'}FILES_TO_LINT
