@@ -44,7 +44,7 @@ create(DslContext.projectId, BuildType({
                 . "${'$'}NVM_DIR/nvm.sh" --install
                 nvm use
                 
-                git -v 
+                git --version
                 git rev-parse HEAD
                 git rev-parse refs/remotes/origin/master
                 git rev-parse origin
