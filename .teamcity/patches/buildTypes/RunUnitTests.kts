@@ -43,28 +43,9 @@ create(DslContext.projectId, BuildType({
             dockerRunParameters = "-u %env.UID%"
         }
         script {
-            name = "Run client tests (1)"
+            name = "Run client tests"
             id = "RUNNER_389"
-            scriptContent = """
-                set -e
-                export JEST_JUNIT_OUTPUT_DIR="./test_results/client"
-                export JEST_JUNIT_OUTPUT_NAME="results.xml"
-                export HOME="/calypso"
-                export NODE_ENV="test"
-                export CHROMEDRIVER_SKIP_DOWNLOAD=true
-                export PUPPETEER_SKIP_DOWNLOAD=true
-                export npm_config_cache=${'$'}(yarn cache dir)
-                
-                # Update node
-                . "${'$'}NVM_DIR/nvm.sh" --install
-                nvm use
-                
-                # Install modules
-                yarn install
-                
-                # Run tests
-                yarn test-client --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
-            """.trimIndent()
+            scriptContent = "yarn test-client --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
             dockerRunParameters = "-u %env.UID%"
