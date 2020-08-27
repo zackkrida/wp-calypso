@@ -124,19 +124,13 @@ create(DslContext.projectId, BuildType({
                 . "${'$'}NVM_DIR/nvm.sh"
                 
                 # Build o2-blocks
-                pushd apps/o2-blocks/
-                yarn build --output-path="../../artifacts/o2-blocks"
-                popd
+                (cd apps/o2-blocks/ && yarn build --output-path="../../artifacts/o2-blocks")
                 
                 # Build wpcom-block-editor
-                pushd apps/wpcom-block-editor/
-                yarn build --output-path="../../artifacts/wpcom-block-editor"
-                popd
+                (cd apps/wpcom-block-editor/ && yarn build --output-path="../../artifacts/wpcom-block-editor")
                 
                 # Build notifications
-                pushd apps/notifications/
-                yarn build --output-path="../../artifacts/notifications"
-                popd
+                (cd apps/notifications/ && yarn build --output-path="../../artifacts/notifications")
             """.trimIndent()
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
