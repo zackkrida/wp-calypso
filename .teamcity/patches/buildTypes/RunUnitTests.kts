@@ -19,7 +19,7 @@ create(DslContext.projectId, BuildType({
 
     steps {
         script {
-            name = "Run tests"
+            name = "Run client tests"
             id = "RUNNER_13"
             scriptContent = """
                 set -e
