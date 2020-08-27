@@ -18,9 +18,8 @@ create(DslContext.projectId, BuildType({
     description = "test"
 
     artifactRules = """
-        artifacts/o2-blocks
-        artifacts/notifications
-        artifacts/wpcom-block-editor
+        test_results => test_results
+        artifacts => artifacts
     """.trimIndent()
 
     vcs {
