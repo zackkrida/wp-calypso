@@ -46,22 +46,15 @@ create(DslContext.projectId, BuildType({
             dockerRunParameters = "-u %env.UID%"
         }
         script {
-            name = "Run all tests (1)"
+            name = "Run unit tests"
             scriptContent = """
                 set -e
                 export JEST_JUNIT_OUTPUT_NAME="results.xml"
                 export HOME="/calypso"
                 export NODE_ENV="test"
-                export CHROMEDRIVER_SKIP_DOWNLOAD=true
-                export PUPPETEER_SKIP_DOWNLOAD=true
-                export npm_config_cache=${'$'}(yarn cache dir)
                 
                 # Update node
-                . "${'$'}NVM_DIR/nvm.sh" --install
-                nvm use
-                
-                # Install modules
-                yarn install
+                . "${'$'}NVM_DIR/nvm.sh"
                 
                 # Run client tests
                 JEST_JUNIT_OUTPUT_DIR="./test_results/client" yarn test-client --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
