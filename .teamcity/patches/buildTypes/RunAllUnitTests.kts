@@ -13,17 +13,6 @@ To apply the patch, change the buildType with id = 'RunAllUnitTests'
 accordingly, and delete the patch script.
 */
 changeBuildType(RelativeId("RunAllUnitTests")) {
-    vcs {
-
-        check(branchFilter == "+:*") {
-            "Unexpected option value: branchFilter = $branchFilter"
-        }
-        branchFilter = """
-            +:refs/pull/*/head
-            +:*
-        """.trimIndent()
-    }
-
     triggers {
         val trigger1 = find<VcsTrigger> {
             vcs {
