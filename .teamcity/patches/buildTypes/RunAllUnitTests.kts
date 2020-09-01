@@ -7,6 +7,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 /*
@@ -142,6 +143,11 @@ create(DslContext.projectId, BuildType({
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerImage = "automattic/wp-calypso-ci:1.0.5"
             dockerRunParameters = "-u %env.UID%"
+        }
+    }
+
+    triggers {
+        vcs {
         }
     }
 
