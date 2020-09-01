@@ -48,29 +48,6 @@ create(DslContext.projectId, BuildType({
             dockerImage = "%docker_image%"
             dockerRunParameters = "-u %env.UID%"
         }
-        script {
-            name = "Build artifacts"
-            scriptContent = """
-                set -e
-                export HOME="/calypso"
-                export NODE_ENV="test"
-                
-                # Update node
-                . "${'$'}NVM_DIR/nvm.sh"
-                
-                # Build o2-blocks
-                (cd apps/o2-blocks/ && yarn build --output-path="../../artifacts/o2-blocks")
-                
-                # Build wpcom-block-editor
-                (cd apps/wpcom-block-editor/ && yarn build --output-path="../../artifacts/wpcom-block-editor")
-                
-                # Build notifications
-                (cd apps/notifications/ && yarn build --output-path="../../artifacts/notifications")
-            """.trimIndent()
-            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-            dockerImage = "%docker_image%"
-            dockerRunParameters = "-u %env.UID%"
-        }
     }
 
     triggers {
