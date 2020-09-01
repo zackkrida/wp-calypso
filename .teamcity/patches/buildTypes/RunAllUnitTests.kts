@@ -40,7 +40,6 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
             }
         }
         feature1.apply {
-            enabled = false
             provider = github {
                 serverUrl = ""
                 authType = token {
