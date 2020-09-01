@@ -49,40 +49,6 @@ create(DslContext.projectId, BuildType({
             dockerRunParameters = "-u %env.UID%"
         }
         script {
-            name = "Code hygiene"
-            scriptContent = """
-                set -e
-                set -x
-                export HOME="/calypso"
-                export NODE_ENV="test"
-                
-                # Update node
-                . "${'$'}NVM_DIR/nvm.sh"
-                
-                # Prevent uncommited changes
-                DIRTY_FILES=${'$'}(git status --porcelain 2>/dev/null)
-                if [ ! -z "${'$'}DIRTY_FILES" ]; then
-                	echo "Repository contains uncommitted changes: "
-                	echo "${'$'}DIRTY_FILES"
-                	echo "You need to checkout the branch, run 'yarn' and commit those files."
-                	exit 1
-                fi
-                
-                # Code style
-                FILES_TO_LINT=${'$'}(git diff --name-only --diff-filter=d refs/remotes/origin/master...HEAD | grep -E '^(client/|server/|packages/)' | grep -E '\.[jt]sx?${'$'}' || exit 0)
-                echo ${'$'}FILES_TO_LINT
-                if [ ! -z "${'$'}FILES_TO_LINT" ]; then
-                	yarn run eslint --format junit --output-file "./test_results/eslint/results.xml" ${'$'}FILES_TO_LINT
-                fi
-                
-                # Run type checks
-                yarn run tsc --project client/landing/gutenboarding
-            """.trimIndent()
-            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-            dockerImage = "%docker_image%"
-            dockerRunParameters = "-u %env.UID%"
-        }
-        script {
             name = "Run unit tests"
             scriptContent = """
                 set -e
