@@ -64,7 +64,6 @@ project {
 }
 
 object RunAllUnitTests: BuildType({
-    id = "RunAllUnitTests"
     name = "Run all unit tests"
     description = "Runs code hygiene and unit tests"
 
