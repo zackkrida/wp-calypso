@@ -196,15 +196,6 @@ object run_all_unit_tests: BuildType({
         }
         perfmon {
         }
-        pullRequests {
-            vcsRootExtId = "${DslContext.settingsRoot.id}"
-            provider = github {
-                authType = token {
-                    token = "credentialsJSON:c834538f-90ff-45f5-bbc4-64406f06a28d"
-                }
-                filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER
-            }
-        }
     }
 }))
 
