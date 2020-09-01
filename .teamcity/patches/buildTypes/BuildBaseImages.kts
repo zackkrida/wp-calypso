@@ -28,7 +28,6 @@ create(DslContext.projectId, BuildType({
         root(DslContext.settingsRoot)
 
         cleanCheckout = true
-        branchFilter = "+:refs/changes/*"
     }
 
     steps {
