@@ -15,7 +15,7 @@ in the root project, and delete the patch script.
 create(DslContext.projectId, BuildType({
     id("RunAllUnitTests")
     name = "Run all unit tests"
-    description = "test"
+    description = "Runs code hygiene and unit tests"
 
     artifactRules = """
         test_results => test_results
