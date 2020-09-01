@@ -27,10 +27,8 @@ create(DslContext.projectId, BuildType({
         root(DslContext.settingsRoot)
 
         cleanCheckout = true
-        branchFilter = """
-            +:*
-            +:refs/heads/*
-        """.trimIndent()
+        branchFilter = "+:/refs/heads/*"
+        excludeDefaultBranchChanges = true
     }
 
     steps {
