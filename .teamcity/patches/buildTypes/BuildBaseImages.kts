@@ -3,8 +3,8 @@ package patches.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.perfmon
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ExecBuildStep
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.exec
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ScriptBuildStep
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 /*
@@ -35,27 +35,11 @@ create(DslContext.projectId, BuildType({
     }
 
     steps {
-        exec {
+        script {
             name = "Build docker images"
-            path = "./bin/build-docker.sh"
-            arguments = "%build.number%"
-            dockerImagePlatform = ExecBuildStep.ImagePlatform.Linux
+            scriptContent = "bash ./bin/build-docker.sh %build.number%"
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerRunParameters = "-u %env.UID%"
-            param("script.content", """
-                set -e
-                export HOME="/calypso"
-                export NODE_ENV="test"
-                export CHROMEDRIVER_SKIP_DOWNLOAD=true
-                export PUPPETEER_SKIP_DOWNLOAD=true
-                export npm_config_cache=${'$'}(yarn cache dir)
-                
-                # Update node
-                . "${'$'}NVM_DIR/nvm.sh" --install
-                nvm use
-                
-                # Install modules
-                yarn install
-            """.trimIndent())
         }
     }
 
