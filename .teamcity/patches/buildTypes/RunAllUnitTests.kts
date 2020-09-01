@@ -22,6 +22,10 @@ create(DslContext.projectId, BuildType({
         artifacts => artifacts
     """.trimIndent()
 
+    params {
+        param("env.CHILD_CONCURRENCY", "15")
+    }
+
     vcs {
         root(DslContext.settingsRoot)
 
