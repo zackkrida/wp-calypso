@@ -197,7 +197,7 @@ object run_all_unit_tests: BuildType({
         perfmon {
         }
     }
-}))
+})
 
 object prepare_calypso_live : BuildType({
     name = "Prepare calypso live"
