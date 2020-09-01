@@ -27,6 +27,10 @@ create(DslContext.projectId, BuildType({
         root(DslContext.settingsRoot)
 
         cleanCheckout = true
+        branchFilter = """
+            +:*
+            +:wip/docker-for-ci
+        """.trimIndent()
     }
 
     steps {
