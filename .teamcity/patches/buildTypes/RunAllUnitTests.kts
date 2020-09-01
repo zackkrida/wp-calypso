@@ -19,7 +19,7 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
             "Unexpected option value: branchFilter = $branchFilter"
         }
         branchFilter = """
-            +:refs/pulls/*/head
+            +:refs/pull/*/head
             +:*
         """.trimIndent()
     }
