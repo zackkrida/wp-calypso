@@ -183,11 +183,6 @@ object run_all_unit_tests: BuildType({
         }
     }
 
-    triggers {
-        vcs {
-        }
-    }
-
     features {
         feature {
             type = "xml-report-plugin"
