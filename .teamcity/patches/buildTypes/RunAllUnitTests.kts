@@ -24,6 +24,7 @@ create(DslContext.projectId, BuildType({
 
     params {
         param("env.JEST_MAX_WORKERS", "16")
+        param("env.NODE_OPTIONS", "--max-old-space-size=32000")
         param("env.CHILD_CONCURRENCY", "15")
     }
 
