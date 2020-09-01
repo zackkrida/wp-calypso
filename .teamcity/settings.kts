@@ -1,8 +1,11 @@
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.PullRequests
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.perfmon
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.projectFeatures.dockerRegistry
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
 
 /*
@@ -33,6 +36,7 @@ project {
 
     vcsRoot(WpCalypso)
 
+    buildType(run_all_unit_tests)
     buildType(prepare_calypso_live)
     buildType(run_woo_e2e_tests)
     buildType(run_ie11_e2e_tests)
@@ -60,7 +64,6 @@ project {
 }
 
 object run_all_unit_tests: BuildType({
-    id("RunAllUnitTests")
     name = "Run all unit tests"
     description = "Runs code hygiene and unit tests"
 
@@ -70,7 +73,8 @@ object run_all_unit_tests: BuildType({
     """.trimIndent()
 
     vcs {
-        root(DslContext.settingsRoot)
+        root(WpCalypso)
+
         cleanCheckout = true
     }
 
@@ -183,6 +187,11 @@ object run_all_unit_tests: BuildType({
         }
     }
 
+    triggers {
+        vcs {
+        }
+    }
+
     features {
         feature {
             type = "xml-report-plugin"
@@ -190,6 +199,15 @@ object run_all_unit_tests: BuildType({
             param("xmlReportParsing.reportDirs", "test_results/**/*.xml")
         }
         perfmon {
+        }
+        pullRequests {
+            vcsRootExtId = "${WpCalypso.id}"
+            provider = github {
+                authType = token {
+                    token = "credentialsJSON:c834538f-90ff-45f5-bbc4-64406f06a28d"
+                }
+                filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER
+            }
         }
     }
 })
