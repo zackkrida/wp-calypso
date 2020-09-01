@@ -1,6 +1,8 @@
 package patches.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.PullRequests
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.VcsTrigger
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
@@ -22,6 +24,30 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
                 +:master
                 +:trunk
             """.trimIndent()
+        }
+    }
+
+    features {
+        val feature1 = find<PullRequests> {
+            pullRequests {
+                vcsRootExtId = "${DslContext.settingsRoot.id}"
+                provider = github {
+                    authType = token {
+                        token = "credentialsJSON:c834538f-90ff-45f5-bbc4-64406f06a28d"
+                    }
+                    filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER
+                }
+            }
+        }
+        feature1.apply {
+            provider = github {
+                serverUrl = ""
+                authType = token {
+                    token = "credentialsJSON:c834538f-90ff-45f5-bbc4-64406f06a28d"
+                }
+                filterTargetBranch = ""
+                filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER_OR_COLLABORATOR
+            }
         }
     }
 }
