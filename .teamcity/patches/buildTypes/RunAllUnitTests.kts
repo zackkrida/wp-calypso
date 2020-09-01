@@ -23,6 +23,7 @@ create(DslContext.projectId, BuildType({
     """.trimIndent()
 
     params {
+        param("env.JEST_MAX_WORKERS", "16")
         param("env.CHILD_CONCURRENCY", "15")
     }
 
