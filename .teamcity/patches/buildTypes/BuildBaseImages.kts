@@ -17,6 +17,8 @@ create(DslContext.projectId, BuildType({
     name = "Build base images"
     description = "Build base docker images"
 
+    buildNumberPattern = "1.0.%build.counter%"
+
     params {
         text("docker_version", "%build.number%", label = "Docker version", description = "Version to use for images", allowEmpty = true)
     }
