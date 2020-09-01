@@ -62,6 +62,7 @@ create(DslContext.projectId, BuildType({
     triggers {
         vcs {
             branchFilter = ""
+            enableQueueOptimization = false
         }
     }
 
