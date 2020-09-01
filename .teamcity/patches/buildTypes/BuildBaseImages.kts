@@ -20,6 +20,10 @@ create(DslContext.projectId, BuildType({
     name = "Build base images"
     description = "Build base docker images"
 
+    params {
+        text("Docker version", "1.0.10", label = "Docker version", description = "Version to use for images", allowEmpty = true)
+    }
+
     vcs {
         root(DslContext.settingsRoot)
 
