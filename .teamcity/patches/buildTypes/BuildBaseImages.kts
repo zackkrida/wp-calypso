@@ -5,6 +5,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ExecBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.exec
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 /*
@@ -55,6 +56,12 @@ create(DslContext.projectId, BuildType({
                 # Install modules
                 yarn install
             """.trimIndent())
+        }
+    }
+
+    triggers {
+        vcs {
+            branchFilter = ""
         }
     }
 
