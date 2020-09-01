@@ -30,7 +30,7 @@ create(DslContext.projectId, BuildType({
         cleanCheckout = true
         branchFilter = """
             +:*
-            +:wip/docker-for-ci
+            +:<default>
         """.trimIndent()
     }
 
