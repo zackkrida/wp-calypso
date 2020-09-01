@@ -36,7 +36,7 @@ project {
 
     vcsRoot(WpCalypso)
 
-    buildType(run_all_unit_tests)
+    buildType(RunAllUnitTests)
     buildType(prepare_calypso_live)
     buildType(run_woo_e2e_tests)
     buildType(run_ie11_e2e_tests)
@@ -63,7 +63,8 @@ project {
     }
 }
 
-object run_all_unit_tests: BuildType({
+object RunAllUnitTests: BuildType({
+	id = 'RunAllUnitTests'
     name = "Run all unit tests"
     description = "Runs code hygiene and unit tests"
 
