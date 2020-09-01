@@ -2,6 +2,7 @@ package patches.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.dockerSupport
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
@@ -45,6 +46,11 @@ create(DslContext.projectId, BuildType({
 
     features {
         perfmon {
+        }
+        dockerSupport {
+            loginToRegistry = on {
+                dockerRegistryId = "PROJECT_EXT_6"
+            }
         }
     }
 }))
