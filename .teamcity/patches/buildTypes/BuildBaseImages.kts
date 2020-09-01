@@ -18,12 +18,7 @@ in the root project, and delete the patch script.
 create(DslContext.projectId, BuildType({
     id("BuildBaseImages")
     name = "Build base images"
-    description = "Runs code hygiene and unit tests"
-
-    artifactRules = """
-        test_results => test_results
-        artifacts => artifacts
-    """.trimIndent()
+    description = "Build base docker images"
 
     vcs {
         root(DslContext.settingsRoot)
