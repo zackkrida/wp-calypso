@@ -49,34 +49,6 @@ create(DslContext.projectId, BuildType({
             dockerRunParameters = "-u %env.UID%"
         }
         script {
-            name = "Run unit tests"
-            scriptContent = """
-                set -e
-                export JEST_JUNIT_OUTPUT_NAME="results.xml"
-                export HOME="/calypso"
-                export NODE_ENV="test"
-                
-                # Update node
-                . "${'$'}NVM_DIR/nvm.sh"
-                
-                # Run client tests
-                JEST_JUNIT_OUTPUT_DIR="./test_results/client" yarn test-client --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
-                
-                # Run packages tests
-                JEST_JUNIT_OUTPUT_DIR="./test_results/packages" yarn test-packages --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
-                
-                # Run server tests
-                JEST_JUNIT_OUTPUT_DIR="./test_results/server" yarn test-server --maxWorkers=${'$'}JEST_MAX_WORKERS --ci --reporters=default --reporters=jest-junit --silent
-                
-                # Run Editing Toolkit tests
-                cd apps/editing-toolkit
-                JEST_JUNIT_OUTPUT_DIR="../../test_results/editing-toolkit" yarn test:js --reporters=default --reporters=jest-junit  --maxWorkers=${'$'}JEST_MAX_WORKERS
-            """.trimIndent()
-            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-            dockerImage = "%docker_image%"
-            dockerRunParameters = "-u %env.UID%"
-        }
-        script {
             name = "Build artifacts"
             scriptContent = """
                 set -e
