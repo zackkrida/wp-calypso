@@ -53,11 +53,6 @@ create(DslContext.projectId, BuildType({
     }
 
     features {
-        feature {
-            type = "xml-report-plugin"
-            param("xmlReportParsing.reportType", "junit")
-            param("xmlReportParsing.reportDirs", "test_results/**/*.xml")
-        }
         perfmon {
         }
     }
