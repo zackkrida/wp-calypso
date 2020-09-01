@@ -46,7 +46,7 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
                     token = "credentialsJSON:803e3446-004d-4f66-a444-80bdc18dbd64"
                 }
                 filterTargetBranch = ""
-                filterAuthorRole = PullRequests.GitHubRoleFilter.EVERYBODY
+                filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER_OR_COLLABORATOR
             }
         }
     }
