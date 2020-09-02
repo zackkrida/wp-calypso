@@ -38,7 +38,25 @@ create(DslContext.projectId, BuildType({
     steps {
         script {
             name = "Build docker images"
-            scriptContent = "bash ./bin/build-docker.sh %build.number%"
+            scriptContent = """
+                VERSION="%build.number%"
+                BUILDER_IMAGE_NAME="registry.a8c.com/calypso/base"
+                CI_IMAGE_NAME="registry.a8c.com/calypso/ci"
+                BUILDER_IMAGE="${'$'}{BUILDER_IMAGE_NAME}:${'$'}{VERSION}"
+                CI_IMAGE="${'$'}{CI_IMAGE_NAME}:${'$'}{VERSION}"
+                
+                docker build -f docker/Dockerfile --no-cache --target builder -t "${'$'}BUILDER_IMAGE" .
+                docker build -f docker/Dockerfile --target ci -t "${'$'}CI_IMAGE" .
+                
+                docker tag "${'$'}BUILDER_IMAGE" "${'$'}{BUILDER_IMAGE_NAME}:latest"
+                docker tag "${'$'}CI_IMAGE" "${'$'}{CI_IMAGE_NAME}:latest"
+                
+                docker push "${'$'}CI_IMAGE"
+                docker push "${'$'}{CI_IMAGE_NAME}:latest"
+                
+                docker push "${'$'}BUILDER_IMAGE"
+                docker push "${'$'}{BUILDER_IMAGE_NAME}:latest"
+            """.trimIndent()
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerRunParameters = "-u %env.UID%"
         }
