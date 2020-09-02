@@ -157,6 +157,7 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
                 cd apps/editing-toolkit
                 JEST_JUNIT_OUTPUT_DIR="../../test_results/editing-toolkit" yarn test:js --reporters=default --reporters=jest-junit  --maxWorkers=${'$'}JEST_MAX_WORKERS
             """.trimIndent()
+            dockerPull = true
         }
     }
 
