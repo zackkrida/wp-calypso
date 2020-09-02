@@ -198,7 +198,7 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
             provider = github {
                 serverUrl = ""
                 authType = token {
-                    token = "credentialsJSON:d61ebb0c-d5da-4d42-80a2-94753d57c56b"
+                    token = "credentialsJSON:57e22787-e451-48ed-9fea-b9bf30775b36"
                 }
                 filterTargetBranch = ""
                 filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER_OR_COLLABORATOR
