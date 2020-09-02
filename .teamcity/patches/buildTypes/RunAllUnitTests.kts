@@ -159,6 +159,10 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
             """.trimIndent()
             dockerPull = true
         }
+        update<ScriptBuildStep>(3) {
+            clearConditions()
+            dockerPull = true
+        }
     }
 
     triggers {
