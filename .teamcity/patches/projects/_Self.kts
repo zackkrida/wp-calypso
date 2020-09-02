@@ -2,6 +2,7 @@ package patches.projects
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.Project
+import jetbrains.buildServer.configs.kotlin.v2019_2.projectFeatures.githubConnection
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 /*
@@ -16,6 +17,17 @@ changeProject(DslContext.projectId) {
         }
         update {
             text("docker_image", "registry.a8c.com/calypso/ci:latest", label = "Docker image", description = "Docker image to use for the run", allowEmpty = true)
+        }
+    }
+
+    features {
+        add {
+            githubConnection {
+                id = "PROJECT_EXT_8"
+                displayName = "GitHub.com"
+                clientId = "abfe9b6b38deb65e68e5"
+                clientSecret = "credentialsJSON:52797023-03f8-430a-b66f-2ac50fcc9608"
+            }
         }
     }
 }
