@@ -210,10 +210,9 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
                 publisher = github {
                     githubUrl = "https://api.github.com"
                     authType = personalToken {
-                        token = "credentialsJSON:5ecf471a-84c1-4e73-ae2b-6b2711cd1903"
+                        token = "credentialsJSON:57e22787-e451-48ed-9fea-b9bf30775b36"
                     }
                 }
-                param("github_oauth_user", "scinos")
             }
         }
     }
