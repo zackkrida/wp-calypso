@@ -15,7 +15,7 @@ changeProject(DslContext.projectId) {
             text("docker_image", "automattic/wp-calypso-ci:1.0.9", label = "Docker image", description = "Docker image to use for the run", allowEmpty = true)
         }
         update {
-            text("docker_image", "registry.a8c.com/calypso/ci:1.0.19", label = "Docker image", description = "Docker image to use for the run", allowEmpty = true)
+            text("docker_image", "registry.a8c.com/calypso/ci:latest", label = "Docker image", description = "Docker image to use for the run", allowEmpty = true)
         }
     }
 }
