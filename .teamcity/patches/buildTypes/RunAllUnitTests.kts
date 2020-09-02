@@ -2,6 +2,7 @@ package patches.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.PullRequests
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.commitStatusPublisher
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.pullRequests
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
@@ -201,6 +202,18 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
                 }
                 filterTargetBranch = ""
                 filterAuthorRole = PullRequests.GitHubRoleFilter.MEMBER_OR_COLLABORATOR
+            }
+        }
+        add {
+            commitStatusPublisher {
+                vcsRootExtId = "${DslContext.settingsRoot.id}"
+                publisher = github {
+                    githubUrl = "https://api.github.com"
+                    authType = personalToken {
+                        token = "credentialsJSON:c834538f-90ff-45f5-bbc4-64406f06a28d"
+                    }
+                }
+                param("github_oauth_user", "scinos")
             }
         }
     }
