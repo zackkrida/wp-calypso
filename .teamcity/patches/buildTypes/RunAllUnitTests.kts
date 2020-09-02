@@ -128,6 +128,10 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
             clearConditions()
             dockerPull = true
         }
+        update<ScriptBuildStep>(1) {
+            clearConditions()
+            dockerPull = true
+        }
         update<ScriptBuildStep>(2) {
             clearConditions()
             scriptContent = """
