@@ -138,8 +138,9 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
                 set -e
                 export JEST_JUNIT_OUTPUT_NAME="results.xml"
                 export HOME="/calypso"
-                export NODE_ENV="test"
-                export CALYPSO_ENV="development"
+                
+                unset NODE_ENV
+                unset CALYPSO_ENV
                 
                 # Update node
                 . "${'$'}NVM_DIR/nvm.sh"
