@@ -66,6 +66,7 @@ create(DslContext.projectId, BuildType({
         perfmon {
         }
         dockerSupport {
+            enabled = false
             loginToRegistry = on {
                 dockerRegistryId = "PROJECT_EXT_6"
             }
