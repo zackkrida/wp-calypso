@@ -222,6 +222,7 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
         }
         add {
             notifications {
+                enabled = false
                 notifierSettings = slackNotifier {
                     connection = "PROJECT_EXT_11"
                     sendTo = "#team-calypso-bot"
