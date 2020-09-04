@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <slackNotifications enabled="true">
+    <slackNotification channel="#team-calypso-bot" enabled="false" mention-channel-enabled="true" mention-slack-user-enabled="true">
+      <states>
+        <state type="buildFinished" enabled="true" />
+        <state type="buildSuccessful" enabled="true" />
+        <state type="buildStarted" enabled="false" />
+        <state type="buildBroken" enabled="true" />
+        <state type="buildFixed" enabled="true" />
+        <state type="buildFailed" enabled="true" />
+        <state type="beforeBuildFinish" enabled="false" />
+        <state type="responsibilityChanged" enabled="false" />
+        <state type="buildInterrupted" enabled="false" />
+      </states>
+      <build-types enabled-for-all="true" enabled-for-subprojects="true" />
+    </slackNotification>
+  </slackNotifications>
+</settings>
+
