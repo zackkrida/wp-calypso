@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
   <slackNotifications enabled="true">
-    <slackNotification channel="#team-calypso-bot" enabled="false" mention-channel-enabled="true" mention-slack-user-enabled="true">
+    <slackNotification channel="#team-calypso-bot" enabled="true" mention-channel-enabled="true" mention-slack-user-enabled="true">
       <states>
         <state type="buildFinished" enabled="true" />
         <state type="buildSuccessful" enabled="true" />
