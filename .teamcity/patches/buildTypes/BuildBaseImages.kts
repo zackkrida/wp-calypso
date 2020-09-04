@@ -6,6 +6,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.dockerSupport
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.schedule
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 /*
@@ -59,6 +60,17 @@ create(DslContext.projectId, BuildType({
             """.trimIndent()
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
             dockerRunParameters = "-u %env.UID%"
+        }
+    }
+
+    triggers {
+        schedule {
+            schedulingPolicy = daily {
+                hour = 0
+            }
+            branchFilter = "+:wip/docker-for-ci"
+            triggerBuild = always()
+            withPendingChangesOnly = false
         }
     }
 
