@@ -16,6 +16,11 @@ To apply the patch, change the buildType with id = 'RunAllUnitTests'
 accordingly, and delete the patch script.
 */
 changeBuildType(RelativeId("RunAllUnitTests")) {
+    check(name == "Run all unit tests") {
+        "Unexpected name: '$name'"
+    }
+    name = "Run unit tests"
+
     expectSteps {
         script {
             name = "Prepare environment"
