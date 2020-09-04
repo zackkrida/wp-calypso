@@ -210,7 +210,6 @@ changeBuildType(RelativeId("RunAllUnitTests")) {
         }
         add {
             commitStatusPublisher {
-                enabled = false
                 vcsRootExtId = "${DslContext.settingsRoot.id}"
                 publisher = github {
                     githubUrl = "https://api.github.com"
