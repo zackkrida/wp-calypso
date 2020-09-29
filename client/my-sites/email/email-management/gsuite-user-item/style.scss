@@ -15,4 +15,13 @@
 			margin-left: 5px;
 		}
 	}
+
+	.gsuite-user-item__actions {
+		display: flex;
+		font-size: $font-body-small;
+
+		a:not(:first-child) {
+			margin-left: 15px;
+		}
+	}
 }

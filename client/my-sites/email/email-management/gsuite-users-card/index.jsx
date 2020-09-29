@@ -18,7 +18,7 @@ import {
 	recordTracksEvent,
 } from 'calypso/state/analytics/actions';
 import { emailManagementAddGSuiteUsers } from 'calypso/my-sites/email/paths';
-import { hasPendingGSuiteUsers } from 'calypso/lib/gsuite';
+import { hasPendingGSuiteUsers, isSubscriptionActive } from 'calypso/lib/gsuite';
 import { getCurrentUser } from 'calypso/state/current-user/selectors';
 import { getSelectedDomain } from 'calypso/lib/domains';
 import { getSelectedSiteSlug } from 'calypso/state/ui/selectors';
@@ -111,6 +111,7 @@ class GSuiteUsersCard extends React.Component {
 
 			const domain = find( this.props.domains, { name: user.domain } );
 			const subscribedDate = get( domain, 'googleAppsSubscription.subscribedDate', false );
+
 			if ( subscribedDate ) {
 				if ( this.isNewUser( user, subscribedDate ) ) {
 					status = null;
@@ -137,6 +138,7 @@ class GSuiteUsersCard extends React.Component {
 			<GSuiteUserItem
 				key={ `google-apps-user-${ user.domain }-${ index }` }
 				user={ user }
+				isSubscriptionActive={ isSubscriptionActive( user.domain ) }
 				onClick={ this.generateClickHandler( user ) }
 				siteSlug={ this.props.selectedSiteSlug }
 			/>

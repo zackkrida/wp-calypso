@@ -211,6 +211,8 @@ class PendingGSuiteTosNotice extends React.PureComponent {
 				<ul>
 					{ this.props.domains.map(
 						( { name: domainName, googleAppsSubscription: { pendingUsers: users } } ) => {
+
+
 							return (
 								<li key={ `pending-gapps-tos-acceptance-domain-${ domainName }` }>
 									<strong>{ domainName } </strong>
