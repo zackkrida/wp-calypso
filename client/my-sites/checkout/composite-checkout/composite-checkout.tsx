@@ -17,7 +17,7 @@ import {
 } from '@automattic/composite-checkout';
 import { ThemeProvider } from 'emotion-theming';
 import { useShoppingCart, ResponseCart } from '@automattic/shopping-cart';
-import { colors } from '@automattic/color-studio';
+import colorStudio from '@automattic/color-studio';
 import { useStripe } from '@automattic/calypso-stripe';
 
 /**
@@ -100,6 +100,7 @@ import EmptyCart from './components/empty-cart';
 import getContactDetailsType from './lib/get-contact-details-type';
 import type { ReactStandardAction } from './types/analytics';
 
+const { colors } = colorStudio;
 const debug = debugFactory( 'calypso:composite-checkout:composite-checkout' );
 
 const { select, registerStore } = defaultRegistry;

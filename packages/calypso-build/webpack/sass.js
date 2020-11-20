@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-const MiniCssExtractPluginWithRTL = require( '@automattic/mini-css-extract-plugin-with-rtl' );
+// const MiniCssExtractPluginWithRTL = require( '@automattic/mini-css-extract-plugin-with-rtl' );
+const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 
 /**
@@ -25,7 +26,7 @@ module.exports.loader = ( {
 } ) => ( {
 	test: /\.(sc|sa|c)ss$/,
 	use: [
-		MiniCssExtractPluginWithRTL.loader,
+		MiniCssExtractPlugin.loader,
 		...( cacheDirectory
 			? [
 					{
@@ -69,11 +70,11 @@ module.exports.loader = ( {
  * @returns {object[]}                 styling relevant webpack plugin objects
  */
 module.exports.plugins = ( { chunkFilename, filename, minify } ) => [
-	new MiniCssExtractPluginWithRTL( {
+	new MiniCssExtractPlugin( {
 		chunkFilename,
 		filename,
 		ignoreOrder: true, // suppress conflicting order warnings from mini-css-extract-plugin
-		rtlEnabled: true,
+		// rtlEnabled: true,
 	} ),
 	new WebpackRTLPlugin( {
 		minify,

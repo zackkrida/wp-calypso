@@ -105,8 +105,8 @@ if ( ! process.env.BROWSERSLIST_ENV ) {
 	process.env.BROWSERSLIST_ENV = browserslistEnv;
 }
 
-let outputFilename = '[name].[chunkhash].min.js'; // prefer the chunkhash, which depends on the chunk, not the entire build
-let outputChunkFilename = '[name].[chunkhash].min.js'; // ditto
+let outputFilename = '[name].[contenthash].min.js'; // prefer the contenthash, which depends on the chunk, not the entire build
+let outputChunkFilename = '[name].[contenthash].min.js'; // ditto
 
 // we should not use chunkhash in development: https://github.com/webpack/webpack-dev-server/issues/377#issuecomment-241258405
 // also we don't minify so dont name them .min.js
@@ -119,6 +119,8 @@ const cssFilename = cssNameFromFilename( outputFilename );
 const cssChunkFilename = cssNameFromFilename( outputChunkFilename );
 
 const outputDir = path.resolve( isDesktop ? './desktop' : '.' );
+
+console.log( __filename );
 
 const fileLoader = FileConfig.loader(
 	// The server bundler express middleware serves assets from a hard-coded publicPath.
@@ -149,7 +151,7 @@ const webpackConfig = {
 		'entry-gutenboarding': [ path.join( __dirname, 'landing', 'gutenboarding' ) ],
 	} ),
 	mode: isDevelopment ? 'development' : 'production',
-	devtool: process.env.SOURCEMAP || ( isDevelopment ? '#eval' : false ),
+	devtool: process.env.SOURCEMAP || ( isDevelopment ? 'eval' : false ),
 	output: {
 		path: path.join( outputDir, 'public', extraPath ),
 		pathinfo: false,
@@ -158,6 +160,21 @@ const webpackConfig = {
 		chunkFilename: outputChunkFilename,
 		devtoolModuleFilenameTemplate: 'app:///[resource-path]',
 	},
+	cache: {
+		// 1. Set cache type to filesystem
+		type: 'filesystem',
+		cacheDirectory: path.resolve( cachePath, 'webpack' ),
+		name: `${ extraPath }-${ isDevelopment ? 'development' : 'production' }`,
+		version: '1', // Manually bump to invalidate cache
+		buildDependencies: {
+			// 2. Add your config as buildDependency to get cache invalidation on config change
+			config: [ __filename ],
+
+			// 3. If you have other things the build depends on you can add them here
+			// Note that webpack, loaders and all modules referenced from your config are automatically added
+		},
+	},
+
 	optimization: {
 		concatenateModules: ! isDevelopment && shouldConcatenateModules,
 		// Desktop: override removeAvailableModules and removeEmptyChunks to minimize resource/RAM usage.
@@ -165,7 +182,7 @@ const webpackConfig = {
 		removeEmptyChunks: ! isDesktop,
 		splitChunks: {
 			chunks: 'all',
-			name: !! ( isDevelopment || shouldEmitStats ),
+			...( isDevelopment || shouldEmitStats ? {} : { name: false } ),
 			maxAsyncRequests: 20,
 			maxInitialRequests: 5,
 		},
@@ -282,7 +299,7 @@ const webpackConfig = {
 			global: 'window',
 		} ),
 		new webpack.NormalModuleReplacementPlugin( /^path$/, 'path-browserify' ),
-		new webpack.IgnorePlugin( /^\.\/locale$/, /moment$/ ),
+		new webpack.IgnorePlugin( { resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ } ),
 		...SassConfig.plugins( {
 			chunkFilename: cssChunkFilename,
 			filename: cssFilename,

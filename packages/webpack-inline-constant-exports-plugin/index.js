@@ -11,7 +11,8 @@ function addConstantExport( module, name, value ) {
 
 function removeDependency( module, dep ) {
 	module.removeDependency( dep );
-	dep.module.reasons = dep.module.reasons.filter( ( r ) => r.dependency !== dep );
+	// Maybe use ModuleGraph?
+	// depModule.reasons = depModule.reasons.filter( ( r ) => r.dependency !== dep );
 }
 
 class InlineConstantExportsPlugin {
@@ -114,7 +115,8 @@ class InlineConstantExportsPlugin {
 						const importSpecifierDependencies = []; // [ ImportSpecifierDependency ]
 
 						for ( const dep of module.dependencies ) {
-							if ( ! this.isConstantsModule( dep.module ) ) {
+							const dependencyModule = compilation.moduleGraph.getModule( dep );
+							if ( ! this.isConstantsModule( dependencyModule ) ) {
 								continue;
 							}
 
@@ -129,7 +131,7 @@ class InlineConstantExportsPlugin {
 							 * remove the import.
 							 */
 							if ( dep instanceof HarmonyImportSideEffectDependency ) {
-								importSideEffectDependencies.set( dep.module, dep );
+								importSideEffectDependencies.set( dependencyModule, dep );
 							}
 
 							/*
@@ -150,7 +152,12 @@ class InlineConstantExportsPlugin {
 							 * with a ConstDependency that inserts the inlined code verbatim.
 							 */
 							if ( dep instanceof HarmonyImportSpecifierDependency ) {
-								if ( dep.module.constantExports && dep.id in dep.module.constantExports ) {
+								const depId = dep.ids[ 0 ];
+
+								if (
+									dependencyModule.constantExports &&
+									depId in dependencyModule.constantExports
+								) {
 									// Mark the dependency for removal: we'll remove it after we're finished
 									// traversing the dependency graph.
 									importSpecifierDependencies.push( dep );
@@ -163,10 +170,10 @@ class InlineConstantExportsPlugin {
 									 * Then we need to expand the shorthand into `{ BLOGGER: __inline_value__ }`
 									 */
 									if ( dep.shorthand ) {
-										inlinedCode = `${ dep.name }: ${ dep.module.constantExports[ dep.id ] }`;
+										inlinedCode = `${ dep.name }: ${ dependencyModule.constantExports[ depId ] }`;
 									} else {
 										/* Every other usage is just inlined as is */
-										inlinedCode = dep.module.constantExports[ dep.id ];
+										inlinedCode = dependencyModule.constantExports[ depId ];
 									}
 									const inlineDep = new ConstDependency( '/* inline */ ' + inlinedCode, dep.range );
 									inlineDep.loc = dep.loc;
@@ -175,11 +182,11 @@ class InlineConstantExportsPlugin {
 									/* Remember the fact that we inlined some constant. We remove import statements
 									 * only for modules where we inlined at least something. The other modules we
 									 * leave as they are. */
-									usesConstantDependencies.set( dep.module, true );
+									usesConstantDependencies.set( dependencyModule, true );
 								} else {
 									/* This dependency was not a constant and cannot be inlined. Remember this fact
 									 * so that we don't remove the import statement for this module. */
-									usesNonConstantDependencies.set( dep.module, true );
+									usesNonConstantDependencies.set( dependencyModule, true );
 								}
 							}
 						}

@@ -110,8 +110,6 @@ class ExtractManifestPlugin {
 			// The logic has been copied from webpack/lib/JavascriptModulesPlugin.js
 			compilation.mainTemplate.hooks.renderManifest.tap( PLUGIN_NAME, ( result, options ) => {
 				const { chunk, outputOptions } = options;
-				const fullHash = options.fullHash;
-				const useChunkHash = compilation.mainTemplate.useChunkHash( chunk );
 
 				if ( chunk.name === this.options.runtimeChunk ) {
 					// Using unshift so the manifest comes before the runtime, so when the runtime runs, all globals are already in place.
@@ -126,7 +124,7 @@ class ExtractManifestPlugin {
 							},
 						},
 						identifier: `chunk${ chunk.id }-manifest`,
-						hash: useChunkHash ? chunk.hash : fullHash,
+						hash: chunk.contentHash.javascript,
 					} );
 				}
 				return result;

@@ -1,4 +1,4 @@
-const BasicEvaluatedExpression = require( 'webpack/lib/BasicEvaluatedExpression' );
+const BasicEvaluatedExpression = require( 'webpack/lib/javascript/BasicEvaluatedExpression' );
 
 // Check that the given call expression is `config.isEnabled( 'flag' )` with
 // `config` as the default export or namespace, and return the `flag` literal value.
