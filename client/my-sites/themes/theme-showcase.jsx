@@ -40,7 +40,6 @@ import {
 	getThemeShowcaseTitle,
 	prependThemeFilterKeys,
 } from 'calypso/state/themes/selectors';
-import UpworkBanner from 'calypso/blocks/upwork-banner';
 import RecommendedThemes from './recommended-themes';
 
 /**
@@ -372,11 +371,6 @@ class ThemeShowcase extends React.Component {
 										'These themes offer more power and flexibility, but can be harder to setup and customize.'
 									) }
 								</p>
-								{ showBanners &&
-									abtest &&
-									abtest( 'builderReferralThemesBanner' ) === 'builderReferralBanner' && (
-										<UpworkBanner location={ 'theme-banner' } />
-									) }
 							</>
 						) }
 						<QueryThemeFilters />
