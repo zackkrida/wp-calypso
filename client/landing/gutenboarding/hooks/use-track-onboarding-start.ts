@@ -3,6 +3,7 @@
  */
 import * as React from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
+import { useLocale } from '@automattic/i18n-utils';
 
 /**
  * Internal dependencies
@@ -19,13 +20,14 @@ export default function useTrackOnboardingStart() {
 	const currentUser = useSelect( ( select ) => select( USER_STORE ).getCurrentUser() );
 	const { hasOnboardingStarted } = useSelect( ( select ) => select( ONBOARD_STORE ).getState() );
 	const { startOnboarding } = useDispatch( ONBOARD_STORE );
+	const locale = useLocale();
 
 	React.useEffect( () => {
 		if ( ! hasOnboardingStarted && currentUser !== undefined ) {
 			const ref = new URLSearchParams( window.location.search ).get( 'ref' ) || '';
 			const siteCount = currentUser?.site_count ?? 0;
-			recordOnboardingStart( ref, siteCount );
+			recordOnboardingStart( ref, siteCount, locale );
 			startOnboarding();
 		}
-	}, [ currentUser, hasOnboardingStarted, startOnboarding ] );
+	}, [ currentUser, hasOnboardingStarted, startOnboarding, locale ] );
 }
