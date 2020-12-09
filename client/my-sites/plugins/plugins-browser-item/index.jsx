@@ -20,6 +20,11 @@ import { getSitesWithPlugin } from 'calypso/state/plugins/installed/selectors';
 import { withLocalizedMoment } from 'calypso/components/localized-moment';
 
 /**
+ * Images
+ */
+import logo from 'calypso/assets/images/plugins/plugins-support-logo.svg';
+
+/**
  * Style dependencies
  */
 import './style.scss';
@@ -67,14 +72,28 @@ class PluginsBrowserListElement extends Component {
 		return ! this.props.isJetpackSite && includes( PREINSTALLED_PLUGINS, this.props.plugin.name );
 	}
 
+	isWpcomSupported() {
+		const { site, plugin } = this.props;
+
+		if ( ! site ) {
+			return false;
+		}
+
+		return (
+			( ! this.props.isJetpackSite && 'Automattic' === plugin.author_name ) ||
+			'WooCommerce' === plugin.author_name
+		);
+	}
+
 	renderSupportedFlag() {
-		if ( ! this.isWpcomPreinstalled() ) {
+		if ( ! this.isWpcomSupported() ) {
 			return;
 		}
 
 		return (
-			<div className="plugins-browser-item__supported">
-				{ this.props.translate( 'Support by WordPress.com' ) }
+			<div className="plugins-browser-item__support">
+				{ this.props.translate( 'Support by' ) }
+				<img src={ logo } alt="WordPress.com" />
 			</div>
 		);
 	}
