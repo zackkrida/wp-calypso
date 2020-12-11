@@ -260,6 +260,7 @@ export class PluginsBrowser extends Component {
 				size={ SHORT_LIST_LENGTH }
 				showPlaceholders={ get( this.state.fullLists, [ category, 'fetching' ] ) !== false }
 				currentSites={ this.props.sites }
+				showMeta={ category !== 'featured' ? true : false }
 			/>
 		);
 	}
