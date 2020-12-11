@@ -13,6 +13,8 @@ import { isArray } from 'lodash';
  */
 import { isEnabled } from 'calypso/config';
 import { useLocalizedMoment } from 'calypso/components/localized-moment';
+import getSiteGmtOffset from 'calypso/state/selectors/get-site-gmt-offset';
+import getSiteTimezoneValue from 'calypso/state/selectors/get-site-timezone-value';
 import isJetpackCloud from 'calypso/lib/jetpack/is-jetpack-cloud';
 import { INDEX_FORMAT } from 'calypso/lib/jetpack/backup-utils';
 import getActivityLogFilter from 'calypso/state/selectors/get-activity-log-filter';
@@ -29,7 +31,6 @@ import FormattedHeader from 'calypso/components/formatted-header';
 import Main from 'calypso/components/main';
 import PageViewTracker from 'calypso/lib/analytics/page-view-tracker';
 import SidebarNavigation from 'calypso/components/sidebar-navigation';
-import { useDateWithOffset } from './hooks';
 import { backupMainPath } from './paths';
 import DatePicker from './date-picker';
 import EnableRestoresBanner from './enable-restores-banner';
@@ -50,8 +51,20 @@ const BackupPage = ( { queryDate } ) => {
 	const siteSettingsUrl = useSelector( ( state ) => getSettingsUrl( state, siteId, 'general' ) );
 
 	const moment = useLocalizedMoment();
-	const parsedQueryDate = queryDate ? moment( queryDate, INDEX_FORMAT ) : moment();
-	const selectedDate = useDateWithOffset( parsedQueryDate );
+	const selectedDate = queryDate ? moment( queryDate, INDEX_FORMAT ) : moment();
+
+	// IMPORTANT: We use the site's timezone for navigation and displaying backups;
+	// this line ensures that we read the passed-in date as being relative to that
+	// timezone instead of the user's browser timezone. If we don't know the site's
+	// timezone, only then do we fall back to using the browser's time.
+	const siteTimezone = useSelector( ( state ) => getSiteTimezoneValue( state, siteId ) );
+	const siteGmtOffset = useSelector( ( state ) => getSiteGmtOffset( state, siteId ) );
+
+	if ( siteTimezone ) {
+		selectedDate.tz( siteTimezone, true );
+	} else if ( siteGmtOffset || siteGmtOffset === 0 ) {
+		selectedDate.utcOffset( siteGmtOffset, true );
+	}
 
 	return (
 		<div
