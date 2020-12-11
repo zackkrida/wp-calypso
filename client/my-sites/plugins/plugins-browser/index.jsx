@@ -324,6 +324,7 @@ export class PluginsBrowser extends Component {
 				args: { feature: plugin.name },
 				context: 'Presenting WordPress.com feature as a Jetpack pseudo-plugin',
 			} ),
+			short_description: plugin.description,
 			author_name: 'Automattic',
 			icon: '//ps.w.org/jetpack/assets/icon-256x256.png',
 			rating: 82, // Jetpack rating on WP.org on 2017-09-27
