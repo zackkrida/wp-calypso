@@ -30,10 +30,33 @@ export default function buildFallbackResponse( { siteDomain = '' } = {} ) {
 		},
 		{
 			icon: 'dashicons-cart',
-			slug: 'purchases',
-			title: translate( 'Purchases' ),
+			slug: 'upgrades',
+			title: translate( 'Upgrades' ),
 			type: 'menu-item',
 			url: `/purchases/${ siteDomain }`,
+			children: [
+				{
+					parent: `/purchases/${ siteDomain }`,
+					slug: 'upgrades',
+					title: translate( 'Plans' ),
+					type: 'submenu-item',
+					url: `/plans/${ siteDomain }`,
+				},
+				{
+					parent: `/purchases/${ siteDomain }`,
+					slug: 'domains',
+					title: translate( 'Domains' ),
+					type: 'submenu-item',
+					url: `/domains/manage/${ siteDomain }`,
+				},
+				{
+					parent: `/purchases/${ siteDomain }`,
+					slug: 'purchases',
+					title: translate( 'Purchases' ),
+					type: 'submenu-item',
+					url: `/purchases/subscriptions/${ siteDomain }`,
+				},
+			],
 		},
 		{
 			icon: 'dashicons-admin-post',
