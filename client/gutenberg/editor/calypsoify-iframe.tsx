@@ -294,6 +294,7 @@ class CalypsoifyIframe extends Component<
 		}
 
 		if ( EditorActions.OpenCheckoutModal === action ) {
+			const { cartData, checkoutOnSuccessCallback } = payload;
 			this.setState( { isCheckoutModalVisible: true, cartData: payload } );
 		}
 
