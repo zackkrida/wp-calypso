@@ -44,7 +44,7 @@ function removeHashFromUrl(): void {
 }
 
 const EditorCheckoutModal = ( props: Props ) => {
-	const { site, isOpen, onClose, cartData } = props;
+	const { site, isOpen, onClose, cartData, checkoutOnSuccessCallback } = props;
 	const hasEmptyCart = ! cartData.products || cartData.products.length < 1;
 
 	const translate = useTranslate();
@@ -83,7 +83,10 @@ const EditorCheckoutModal = ( props: Props ) => {
 				shouldCloseOnClickOutside={ false }
 				icon={ <Icon icon={ wordpress } size={ 36 } /> }
 			>
-				<CalypsoShoppingCartProvider cartKey={ cartKey }>
+				<CalypsoShoppingCartProvider
+					cartKey={ cartKey }
+					onPaymentComplete={ checkoutOnSuccessCallback }
+				>
 					<StripeHookProvider
 						fetchStripeConfiguration={ fetchStripeConfigurationWpcom }
 						locale={ props.locale }
@@ -107,6 +110,7 @@ type Props = {
 	onClose: () => void;
 	isOpen: boolean;
 	locale: string | undefined;
+	checkoutOnSuccessCallback?: () => void;
 };
 
 EditorCheckoutModal.defaultProps = {
