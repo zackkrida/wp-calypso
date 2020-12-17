@@ -73,6 +73,11 @@ const EditorCheckoutModal = ( props: Props ) => {
 		: cartData.products.map( ( product ) => product.product_slug );
 	const commaSeparatedProductSlugs = productSlugs?.join( ',' );
 
+	const handleAfterPaymentComplete = () => {
+		debugger;
+		checkoutOnSuccessCallback?.();
+	};
+
 	return (
 		isOpen && (
 			<Modal
@@ -83,10 +88,7 @@ const EditorCheckoutModal = ( props: Props ) => {
 				shouldCloseOnClickOutside={ false }
 				icon={ <Icon icon={ wordpress } size={ 36 } /> }
 			>
-				<CalypsoShoppingCartProvider
-					cartKey={ cartKey }
-					onPaymentComplete={ checkoutOnSuccessCallback }
-				>
+				<CalypsoShoppingCartProvider cartKey={ cartKey }>
 					<StripeHookProvider
 						fetchStripeConfiguration={ fetchStripeConfigurationWpcom }
 						locale={ props.locale }
@@ -96,6 +98,7 @@ const EditorCheckoutModal = ( props: Props ) => {
 							siteId={ site.ID }
 							siteSlug={ site.slug }
 							productAliasFromUrl={ commaSeparatedProductSlugs }
+							onAfterPaymentComplete={ handleAfterPaymentComplete }
 						/>
 					</StripeHookProvider>
 				</CalypsoShoppingCartProvider>
