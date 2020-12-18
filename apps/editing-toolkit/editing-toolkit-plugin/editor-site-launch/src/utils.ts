@@ -31,7 +31,9 @@ export const openCheckout = ( siteId = window?.currentSiteId, isEcommerce = fals
 	// only in focused launch, open checkout modal assuming the cart is already updated
 	if ( hasAction( HOOK_OPEN_CHECKOUT_MODAL ) && isFocusedLaunchFlow ) {
 		doAction( HOOK_OPEN_CHECKOUT_MODAL, {
-			//checkoutOnSuccessCallback: () => console.log( 'Callback' ),
+			checkoutOnSuccessCallback: () => {
+				console.log( 'TODO: close the modal AND launch the site' );
+			},
 		} );
 		return;
 	}

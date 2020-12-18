@@ -697,7 +697,7 @@ class CalypsoifyIframe extends Component<
 
 	handleCheckoutSuccess = () => {
 		if ( this.checkoutPort ) {
-			this.checkoutPort.postMessage();
+			this.checkoutPort.postMessage( 'checkout complete' );
 
 			// this is a once-only port
 			// after sending our message we want to close it out
@@ -768,7 +768,7 @@ class CalypsoifyIframe extends Component<
 				/>
 				{ isCheckoutOverlayEnabled && (
 					<AsyncLoad
-						checkoutOnSuccessCallback={ this.handleCheckoutSuccess() }
+						checkoutOnSuccessCallback={ this.handleCheckoutSuccess }
 						require="calypso/blocks/editor-checkout-modal"
 						onClose={ this.closeCheckoutModal }
 						cartData={ cartData }

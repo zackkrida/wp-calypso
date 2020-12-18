@@ -961,7 +961,7 @@ async function preselectParentPage() {
 
 function handleCheckoutModal( calypsoPort ) {
 	const { port1, port2 } = new MessageChannel();
-	const { checkoutPort1, checkoutPort2 } = new MessageChannel();
+	const { port1: checkoutPort1, port2: checkoutPort2 } = new MessageChannel();
 	calypsoPort.postMessage(
 		{
 			action: 'getCheckoutModalStatus',
@@ -979,20 +979,24 @@ function handleCheckoutModal( calypsoPort ) {
 				'a8c.wpcom-block-editor.openCheckoutModal',
 				'a8c/wpcom-block-editor/openCheckoutModal',
 				( data ) => {
-					//callback = data.checkoutOnSuccessCallback;
-					calypsoPort.postMessage( {
-						action: 'openCheckoutModal',
-						payload: data,
-						ports: [ checkoutPort2 ],
-					} );
+					callback = data.checkoutOnSuccessCallback;
+					// Deleting the checkoutOnSuccessCallback as otherwise
+					// the `data` object could not be cloned in postMessage()
+					delete data.checkoutOnSuccessCallback;
+					calypsoPort.postMessage(
+						{
+							action: 'openCheckoutModal',
+							payload: data,
+						},
+						[ checkoutPort2 ]
+					);
 				}
 			);
 		}
 	};
 
-	checkoutPort1.onmessage = ( message ) => {
-		//callback?.();
-		console.log( 'checkout finished' );
+	checkoutPort1.onmessage = () => {
+		callback?.();
 	};
 }
 
