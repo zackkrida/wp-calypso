@@ -30,15 +30,12 @@ import Layout from 'calypso/components/layout';
 import Column from 'calypso/components/layout/column';
 import PaymentMethodSidebar from 'calypso/me/purchases/components/payment-method-sidebar';
 import PaymentMethodLoader from 'calypso/me/purchases/components/payment-method-loader';
-import { isEnabled } from 'calypso/config';
 import { concatTitle } from 'calypso/lib/react-helpers';
 
 function AddPaymentMethod( props ) {
 	const isDataLoading = ! props.hasLoadedSites || ! props.hasLoadedUserPurchasesFromServer;
 	const isDataValid = ( { purchase, selectedSite } ) => purchase && selectedSite;
-	const addPaymentMethodTitle = isEnabled( 'purchases/new-payment-methods' )
-		? titles.addPaymentMethod
-		: titles.addCreditCard;
+	const addPaymentMethodTitle = titles.addPaymentMethod;
 
 	if ( ! isDataLoading && ! isDataValid( props ) ) {
 		// Redirect if invalid data
@@ -73,11 +70,7 @@ function AddPaymentMethod( props ) {
 				purchaseId={ props.purchaseId }
 			/>
 			<PageViewTracker
-				path={
-					isEnabled( 'purchases/new-payment-methods' )
-						? '/me/purchases/:site/:purchaseId/payment-method/add'
-						: '/me/purchases/:site/:purchaseId/payment/add'
-				}
+				path={ '/me/purchases/:site/:purchaseId/payment-method/add' }
 				title={ concatTitle( titles.purchases, addPaymentMethodTitle ) }
 			/>
 
