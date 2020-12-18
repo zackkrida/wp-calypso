@@ -43,9 +43,8 @@ function removeHashFromUrl(): void {
 	} catch {}
 }
 
-const EditorCheckoutModal = ( props: Props ) => {
+const EditorCheckoutModal: React.FunctionComponent< Props > = ( props ) => {
 	const { site, isOpen, onClose, cartData, checkoutOnSuccessCallback } = props;
-	const hasEmptyCart = ! cartData.products || cartData.products.length < 1;
 
 	const translate = useTranslate();
 
@@ -68,48 +67,47 @@ const EditorCheckoutModal = ( props: Props ) => {
 	// We need to pass in a comma separated list of product
 	// slugs to be set in the cart otherwise we will be
 	// redirected to the plans page due to an empty cart
-	const productSlugs = hasEmptyCart
-		? null
-		: cartData.products.map( ( product ) => product.product_slug );
+	const productSlugs =
+		// check if the cart is empty (i.e no products)
+		! cartData || cartData.products.length < 1
+			? null
+			: cartData.products.map( ( product ) => product.product_slug );
 	const commaSeparatedProductSlugs = productSlugs?.join( ',' );
 
 	const handleAfterPaymentComplete = () => {
-		debugger;
 		checkoutOnSuccessCallback?.();
 	};
 
-	return (
-		isOpen && (
-			<Modal
-				open={ isOpen }
-				overlayClassName="editor-checkout-modal"
-				onRequestClose={ onClose }
-				title={ String( translate( 'Checkout modal' ) ) }
-				shouldCloseOnClickOutside={ false }
-				icon={ <Icon icon={ wordpress } size={ 36 } /> }
-			>
-				<CalypsoShoppingCartProvider cartKey={ cartKey }>
-					<StripeHookProvider
-						fetchStripeConfiguration={ fetchStripeConfigurationWpcom }
-						locale={ props.locale }
-					>
-						<CompositeCheckout
-							isInEditor
-							siteId={ site.ID }
-							siteSlug={ site.slug }
-							productAliasFromUrl={ commaSeparatedProductSlugs }
-							onAfterPaymentComplete={ handleAfterPaymentComplete }
-						/>
-					</StripeHookProvider>
-				</CalypsoShoppingCartProvider>
-			</Modal>
-		)
-	);
+	return isOpen ? (
+		<Modal
+			open={ isOpen }
+			overlayClassName="editor-checkout-modal"
+			onRequestClose={ onClose }
+			title={ String( translate( 'Checkout modal' ) ) }
+			shouldCloseOnClickOutside={ false }
+			icon={ <Icon icon={ wordpress } size={ 36 } /> }
+		>
+			<CalypsoShoppingCartProvider cartKey={ cartKey }>
+				<StripeHookProvider
+					fetchStripeConfiguration={ fetchStripeConfigurationWpcom }
+					locale={ props.locale }
+				>
+					<CompositeCheckout
+						isInEditor
+						siteId={ site?.ID }
+						siteSlug={ site?.slug }
+						productAliasFromUrl={ commaSeparatedProductSlugs }
+						onAfterPaymentComplete={ handleAfterPaymentComplete }
+					/>
+				</StripeHookProvider>
+			</CalypsoShoppingCartProvider>
+		</Modal>
+	) : null;
 };
 
 type Props = {
-	site: SiteData;
-	cartData: RequestCart;
+	site: SiteData | null;
+	cartData?: RequestCart;
 	onClose: () => void;
 	isOpen: boolean;
 	locale: string | undefined;
@@ -117,9 +115,11 @@ type Props = {
 };
 
 EditorCheckoutModal.defaultProps = {
+	site: null,
 	isOpen: false,
-	onClose: () => null,
-	cartData: {},
+	onClose: () => {
+		return;
+	},
 };
 
 export default connect( ( state ) => ( {
