@@ -26,23 +26,16 @@ import { getCurrentUserLocale } from 'calypso/state/current-user/selectors';
 import Layout from 'calypso/components/layout';
 import Column from 'calypso/components/layout/column';
 import PaymentMethodSidebar from 'calypso/me/purchases/components/payment-method-sidebar';
-import { isEnabled } from 'calypso/config';
 
 function AddNewPaymentMethod( props ) {
 	const goToPaymentMethods = () => page( paymentMethods );
 	const recordFormSubmitEvent = () => recordTracksEvent( 'calypso_add_credit_card_form_submit' );
-	const addPaymentMethodTitle = isEnabled( 'purchases/new-payment-methods' )
-		? titles.addPaymentMethod
-		: titles.addCreditCard;
+	const addPaymentMethodTitle = titles.addPaymentMethod;
 
 	return (
 		<Main className="add-new-payment-method is-wide-layout">
 			<PageViewTracker
-				path={
-					isEnabled( 'purchases/new-payment-methods' )
-						? '/me/purchases/add-payment-method'
-						: '/me/purchases/add-credit-card'
-				}
+				path="/me/purchases/add-payment-method"
 				title={ concatTitle( titles.purchases, addPaymentMethodTitle ) }
 			/>
 			<DocumentHead title={ concatTitle( titles.purchases, addPaymentMethodTitle ) } />
