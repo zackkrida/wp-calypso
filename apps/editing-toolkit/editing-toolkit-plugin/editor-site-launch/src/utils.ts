@@ -24,7 +24,13 @@ export const redirectToWpcomPath = ( url: string ) => {
 	redirectParentWindow( `${ origin }${ path }` );
 };
 
-export const openCheckout = ( siteId = window?.currentSiteId, isEcommerce = false ) => {
+export const openCheckout = (
+	siteId = window?.currentSiteId,
+	isEcommerce = false,
+	onSuccessCallback = () => {
+		return;
+	}
+) => {
 	const HOOK_OPEN_CHECKOUT_MODAL = 'a8c.wpcom-block-editor.openCheckoutModal';
 	const isFocusedLaunchFlow = window?.calypsoifyGutenberg?.isFocusedLaunchFlow;
 
@@ -32,7 +38,7 @@ export const openCheckout = ( siteId = window?.currentSiteId, isEcommerce = fals
 	if ( hasAction( HOOK_OPEN_CHECKOUT_MODAL ) && isFocusedLaunchFlow ) {
 		doAction( HOOK_OPEN_CHECKOUT_MODAL, {
 			checkoutOnSuccessCallback: () => {
-				console.log( 'TODO: close the modal AND launch the site' );
+				onSuccessCallback();
 			},
 		} );
 		return;

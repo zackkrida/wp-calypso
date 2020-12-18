@@ -19,8 +19,8 @@ export function useCart(): { goToCheckout: () => Promise< void > } {
 		select( PLANS_STORE ).isPlanEcommerce( plan?.storeSlug )
 	);
 
-	const { getCart, setCart } = useDispatch( SITE_STORE );
-
+	const { getCart, setCart, launchSite } = useDispatch( SITE_STORE );
+	const onSuccess = () => launchSite( siteId );
 	const goToCheckout = async () => {
 		// setting the cart with Launch products can be extracted
 		// to an action creator on the Launch data-store
@@ -34,7 +34,7 @@ export function useCart(): { goToCheckout: () => Promise< void > } {
 		} );
 
 		// open checkout modal or redirect to /checkout only after the cart is updated
-		openCheckout( siteId, isEcommercePlan );
+		openCheckout( siteId, isEcommercePlan, onSuccess );
 	};
 
 	return {
