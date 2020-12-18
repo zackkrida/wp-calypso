@@ -98,25 +98,8 @@ export function AddNewPaymentMethod( { siteSlug }: { siteSlug: string } ): JSX.E
 	return (
 		<Main className="purchases is-wide-layout">
 			<MySitesSidebarNavigation />
-			<PageViewTracker
-				path={
-					config.isEnabled( 'purchases/new-payment-methods' )
-						? '/purchases/add-payment-method'
-						: '/purchases/add-credit-card'
-				}
-				title={
-					config.isEnabled( 'purchases/new-payment-methods' )
-						? titles.addPaymentMethod
-						: titles.addCreditCard
-				}
-			/>
-			<DocumentHead
-				title={
-					config.isEnabled( 'purchases/new-payment-methods' )
-						? titles.addPaymentMethod
-						: titles.addCreditCard
-				}
-			/>
+			<PageViewTracker path="/purchases/add-payment-method" title={ titles.addPaymentMethod } />
+			<DocumentHead title={ titles.addPaymentMethod } />
 			<FormattedHeader
 				brandFont
 				className="payment-methods__page-heading"
@@ -128,11 +111,7 @@ export function AddNewPaymentMethod( { siteSlug }: { siteSlug: string } ): JSX.E
 				errorMessage={ translate( 'Sorry, there was an error loading this page.' ) }
 				onError={ logPaymentMethodsError }
 			>
-				<HeaderCake onClick={ goToBillingHistory }>
-					{ config.isEnabled( 'purchases/new-payment-methods' )
-						? titles.addPaymentMethod
-						: titles.addCreditCard }
-				</HeaderCake>
+				<HeaderCake onClick={ goToBillingHistory }>{ titles.addPaymentMethod }</HeaderCake>
 				<Layout>
 					<Column type="main">
 						<StripeHookProvider
