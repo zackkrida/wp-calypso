@@ -549,7 +549,7 @@ export class MySitesSidebar extends Component {
 				onNavigate={ this.trackDomainsClick }
 				preloadSectionName="domains"
 				tipTarget="domains"
-				expandSection={ this.expandManageSection }
+				expandSection={ this.expandUpgradesSection }
 			/>
 		);
 	}
@@ -1031,6 +1031,7 @@ export class MySitesSidebar extends Component {
 						materialIcon="settings"
 					>
 						{ this.hosting() }
+						{ this.domains() }
 						{ this.users() }
 						{ this.siteSettings() }
 					</ExpandableSidebarMenu>
