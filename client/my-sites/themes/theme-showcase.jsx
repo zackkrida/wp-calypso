@@ -12,7 +12,6 @@ import Gridicon from 'calypso/components/gridicon';
 /**
  * Internal dependencies
  */
-import { abtest } from 'calypso/lib/abtest';
 import { Button } from '@automattic/components';
 import ThemesSelection from './themes-selection';
 import SubMasterbarNav from 'calypso/components/sub-masterbar-nav';
@@ -33,7 +32,6 @@ import {
 import ThemesSearchCard from './themes-magic-search-card';
 import QueryThemeFilters from 'calypso/components/data/query-theme-filters';
 import {
-	getActiveTheme,
 	getThemeFilterTerms,
 	getThemeFilterToTermTable,
 	getThemeShowcaseDescription,
@@ -86,7 +84,6 @@ class ThemeShowcase extends React.Component {
 	}
 
 	static propTypes = {
-		currentThemeId: PropTypes.string,
 		emptyContent: PropTypes.element,
 		tier: PropTypes.oneOf( [ '', 'free', 'premium' ] ),
 		search: PropTypes.string,
@@ -221,7 +218,6 @@ class ThemeShowcase extends React.Component {
 
 	render() {
 		const {
-			currentThemeId,
 			siteId,
 			options,
 			getScreenshotOption,
@@ -269,8 +265,6 @@ class ThemeShowcase extends React.Component {
 				.filter( ( icon ) => !! icon )
 				.sort( ( a, b ) => a.order - b.order )
 		);
-
-		const showBanners = currentThemeId || ! siteId || ! isLoggedIn;
 
 		const { isShowcaseOpen } = this.state;
 		const isQueried = this.props.search || this.props.filter || this.props.tier;
@@ -430,7 +424,6 @@ class ThemeShowcase extends React.Component {
 }
 
 const mapStateToProps = ( state, { siteId, filter, tier, vertical } ) => ( {
-	currentThemeId: getActiveTheme( state, siteId ),
 	isLoggedIn: !! getCurrentUserId( state ),
 	siteSlug: getSiteSlug( state, siteId ),
 	description: getThemeShowcaseDescription( state, { filter, tier, vertical } ),
