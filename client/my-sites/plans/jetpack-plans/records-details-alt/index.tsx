@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
  */
 import { slugToSelectorProduct } from '../utils';
 import { getJetpackProducts } from 'calypso/lib/products-values/translations';
-import { getCurrentUserCurrencyCode } from 'calypso/state/current-user/selectors';
+import { getCurrentUserCurrencyCode } from 'calypso/state/currency-code/selectors';
 import { getAvailableProductsBySiteId } from 'calypso/state/sites/products/selectors';
 import { getSelectedSiteId } from 'calypso/state/ui/selectors';
 

@@ -62,7 +62,7 @@ import { getJetpackCROActiveVersion } from 'calypso/my-sites/plans/jetpack-plans
 import { MORE_FEATURES_LINK } from 'calypso/my-sites/plans/jetpack-plans/constants';
 import { addQueryArgs } from 'calypso/lib/route';
 import { getProductCost } from 'calypso/state/products-list/selectors/get-product-cost';
-import { getCurrentUserCurrencyCode } from 'calypso/state/current-user/selectors';
+import { getCurrentUserCurrencyCode } from 'calypso/state/currency-code/selectors';
 
 /**
  * Type dependencies

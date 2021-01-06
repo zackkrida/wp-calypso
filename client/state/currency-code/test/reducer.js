@@ -1,0 +1,100 @@
+/**
+ * Internal dependencies
+ */
+import {
+	DESERIALIZE,
+	SERIALIZE,
+	PLANS_RECEIVE,
+	SITE_PLANS_FETCH_COMPLETED,
+} from 'calypso/state/action-types';
+import currencyCode from '../reducer';
+
+describe( '#currencyCode()', () => {
+	test( 'should default to null', () => {
+		const state = currencyCode( undefined, {} );
+		expect( state ).toBeNull();
+	} );
+	test( 'should set currency code when plans are received', () => {
+		const state = currencyCode( undefined, {
+			type: PLANS_RECEIVE,
+			plans: [
+				{
+					product_id: 1001,
+					currency_code: 'USD',
+				},
+			],
+		} );
+		expect( state ).toBe( 'USD' );
+	} );
+	test( 'should return current state when we have empty plans', () => {
+		const state = currencyCode( 'USD', {
+			type: PLANS_RECEIVE,
+			plans: [],
+		} );
+		expect( state ).toBe( 'USD' );
+	} );
+	test( 'should update current state when we receive new plans', () => {
+		const state = currencyCode( 'USD', {
+			type: PLANS_RECEIVE,
+			plans: [
+				{
+					product_id: 1001,
+					currency_code: 'EUR',
+				},
+			],
+		} );
+		expect( state ).toBe( 'EUR' );
+	} );
+	test( 'should return current state when we have empty site plans', () => {
+		const state = currencyCode( 'USD', {
+			type: SITE_PLANS_FETCH_COMPLETED,
+			plans: [],
+		} );
+		expect( state ).toBe( 'USD' );
+	} );
+	test( 'should set currency code when site plans are received', () => {
+		const state = currencyCode( undefined, {
+			type: SITE_PLANS_FETCH_COMPLETED,
+			plans: [
+				{
+					productName: 'Free',
+					currencyCode: 'USD',
+				},
+			],
+		} );
+		expect( state ).toBe( 'USD' );
+	} );
+	test( 'should update currency code when site plans are received', () => {
+		const state = currencyCode( 'USD', {
+			type: SITE_PLANS_FETCH_COMPLETED,
+			plans: [
+				{
+					productName: 'Free',
+					currencyCode: 'CAD',
+				},
+			],
+		} );
+		expect( state ).toBe( 'CAD' );
+	} );
+	test( 'should persist state', () => {
+		const original = 'JPY';
+		const state = currencyCode( original, {
+			type: SERIALIZE,
+		} );
+		expect( state ).toBe( original );
+	} );
+	test( 'should restore valid persisted state', () => {
+		const original = 'JPY';
+		const state = currencyCode( original, {
+			type: DESERIALIZE,
+		} );
+		expect( state ).toBe( original );
+	} );
+	test( 'should ignore invalid persisted state', () => {
+		const original = 1234;
+		const state = currencyCode( original, {
+			type: DESERIALIZE,
+		} );
+		expect( state ).toBeNull();
+	} );
+} );

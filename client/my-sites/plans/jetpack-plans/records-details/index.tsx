@@ -16,7 +16,7 @@ import InfoPopover from 'calypso/components/info-popover';
 import { preventWidows } from 'calypso/lib/formatting';
 import { getJetpackProducts } from 'calypso/lib/products-values/translations';
 import PlanPrice from 'calypso/my-sites/plan-price';
-import { getCurrentUserCurrencyCode } from 'calypso/state/current-user/selectors';
+import { getCurrentUserCurrencyCode } from 'calypso/state/currency-code/selectors';
 import { getAvailableProductsBySiteId } from 'calypso/state/sites/products/selectors';
 import { getSelectedSiteId } from 'calypso/state/ui/selectors';
 

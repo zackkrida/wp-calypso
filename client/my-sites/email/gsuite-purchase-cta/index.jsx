@@ -14,7 +14,7 @@ import { Button, CompactCard } from '@automattic/components';
 import config from 'calypso/config';
 import { emailManagementNewGSuiteAccount } from 'calypso/my-sites/email/paths';
 import EmailVerificationGate from 'calypso/components/email-verification/email-verification-gate';
-import { getCurrentUserCurrencyCode } from 'calypso/state/current-user/selectors';
+import { getCurrentUserCurrencyCode } from 'calypso/state/currency-code/selectors';
 import { getProductBySlug } from 'calypso/state/products-list/selectors';
 import { getSelectedSiteSlug } from 'calypso/state/ui/selectors';
 import {

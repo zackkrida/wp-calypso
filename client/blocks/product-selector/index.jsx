@@ -29,7 +29,7 @@ import {
 	getAvailableProductsList,
 	isProductsListFetching,
 } from 'calypso/state/products-list/selectors';
-import { getCurrentUserCurrencyCode } from 'calypso/state/current-user/selectors';
+import { getCurrentUserCurrencyCode } from 'calypso/state/currency-code/selectors';
 import { getSelectedSiteId } from 'calypso/state/ui/selectors';
 import { getSitePlanSlug, isRequestingSitePlans } from 'calypso/state/sites/plans/selectors';
 import { getSitePurchases, isFetchingSitePurchases } from 'calypso/state/purchases/selectors';

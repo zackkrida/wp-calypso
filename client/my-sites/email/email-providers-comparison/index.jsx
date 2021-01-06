@@ -14,10 +14,8 @@ import { includes } from 'lodash';
 import config from 'calypso/config';
 import PromoCard from 'calypso/components/promo-section/promo-card';
 import EmailProviderDetails from './email-provider-details';
-import {
-	getCurrentUserCurrencyCode,
-	getCurrentUserLocale,
-} from 'calypso/state/current-user/selectors';
+import { getCurrentUserLocale } from 'calypso/state/current-user/selectors';
+import { getCurrentUserCurrencyCode } from 'calypso/state/currency-code/selectors';
 import { getProductBySlug } from 'calypso/state/products-list/selectors';
 import {
 	GOOGLE_WORKSPACE_BUSINESS_STARTER_YEARLY,

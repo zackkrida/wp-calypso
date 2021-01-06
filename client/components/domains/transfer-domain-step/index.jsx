@@ -29,7 +29,8 @@ import { domainAvailability } from 'calypso/lib/domains/constants';
 import { PLAN_PERSONAL } from 'calypso/lib/plans/constants';
 import { getAvailabilityNotice } from 'calypso/lib/domains/registration/availability-messages';
 import DomainRegistrationSuggestion from 'calypso/components/domains/domain-registration-suggestion';
-import { getCurrentUser, getCurrentUserCurrencyCode } from 'calypso/state/current-user/selectors';
+import { getCurrentUser } from 'calypso/state/current-user/selectors';
+import { getCurrentUserCurrencyCode } from 'calypso/state/currency-code/selectors';
 import UpsellNudge from 'calypso/blocks/upsell-nudge';
 import Notice from 'calypso/components/notice';
 import {
