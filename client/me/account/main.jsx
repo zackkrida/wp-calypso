@@ -23,6 +23,7 @@ import config from 'calypso/config';
 import languages from '@automattic/languages';
 import { supportsCssCustomProperties } from 'calypso/lib/feature-detection';
 import { Card, Button } from '@automattic/components';
+import CardHeading from 'calypso/components/card-heading';
 import FormTextInput from 'calypso/components/forms/form-text-input';
 import FormTextValidation from 'calypso/components/forms/form-input-validation';
 import FormCheckbox from 'calypso/components/forms/form-checkbox';
@@ -881,10 +882,13 @@ const Account = createReactClass( {
 			<Main className="account is-wide-layout">
 				<PageViewTracker path="/me/account" title="Me > Account Settings" />
 				<MeSidebarNavigation />
-				<ReauthRequired twoStepAuthorization={ twoStepAuthorization } />
+				{ false && <ReauthRequired twoStepAuthorization={ twoStepAuthorization } /> }
 				<FormattedHeader brandFont headerText={ translate( 'Account Settings' ) } align="left" />
 
 				<Card className="account__settings">
+					<CardHeading className="account__settings-card-header" tagName="h2" size={ 14 }>
+						{ translate( 'Account Information' ) }
+					</CardHeading>
 					<form onChange={ markChanged } onSubmit={ this.submitForm }>
 						<FormFieldset>
 							<FormLabel htmlFor="user_login">{ translate( 'Username' ) }</FormLabel>
@@ -914,6 +918,24 @@ const Account = createReactClass( {
 								timeout={ { enter: 500, exit: 10 } }
 							>
 								{ renderUsernameForm ? this.renderUsernameFields() : this.renderAccountFields() }
+							</CSSTransition>
+						</TransitionGroup>
+					</form>
+				</Card>
+
+				<Card className="account__settings">
+					<CardHeading className="account__settings-card-header" tagName="h2" size={ 14 }>
+						{ translate( 'Interface Settings' ) }
+					</CardHeading>
+					<form onChange={ markChanged } onSubmit={ this.submitForm }>
+						{ /* This is how we animate showing/hiding the form field sections */ }
+						<TransitionGroup>
+							<CSSTransition
+								key={ renderUsernameForm ? 'username' : 'account' }
+								classNames="account__username-form-toggle"
+								timeout={ { enter: 500, exit: 10 } }
+							>
+								{ this.renderAccountFields() }
 							</CSSTransition>
 						</TransitionGroup>
 					</form>

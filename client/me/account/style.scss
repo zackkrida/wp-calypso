@@ -23,3 +23,12 @@
 .account__settings-form select {
 	width: 100%;
 }
+
+.account__settings-card-header {
+	color: var(--color-text-subtle);
+	border-bottom: 1px solid var(--color-border-subtle);
+	// padding: 12px 16px;
+	padding: 18px 24px;
+	margin: -24px -24px 24px -24px;
+
+}
