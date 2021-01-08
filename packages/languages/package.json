@@ -22,5 +22,8 @@
 		"download": "node bin/download.js",
 		"test": "yarn jest"
 	},
-	"dependencies": {}
+	"dependencies": {},
+	"volta": {
+		"extends": "../../package.json"
+	}
 }

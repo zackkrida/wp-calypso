@@ -31,5 +31,8 @@
 		"postcss": "^7.0.32",
 		"postcss-custom-properties": "^9.1.1",
 		"node-sass": "^4.13.0"
+	},
+	"volta": {
+		"extends": "../../package.json"
 	}
 }

@@ -49,5 +49,8 @@
 		"cache-loader": "^4.1.0",
 		"webpack": "^4.44.2"
 	},
-	"private": true
+	"private": true,
+	"volta": {
+		"extends": "../../package.json"
+	}
 }
