@@ -36,13 +36,17 @@ import { isTreatmentPlansReorderTest } from 'calypso/state/marketing/selectors';
  */
 import './style.scss';
 
+function isMobileResolution() {
+	return window.innerWidth < 1035;
+}
+
 export class PlansStep extends Component {
 	state = {
-		plansWithScroll: false,
+		plansWithScroll: ! isMobileResolution(),
 	};
 
 	windowResize = () => {
-		this.setState( { plansWithScroll: window.innerWidth > 1035 } );
+		this.setState( { plansWithScroll: ! isMobileResolution() } );
 	};
 
 	componentWillUnmount() {
