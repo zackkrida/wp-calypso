@@ -37,7 +37,20 @@ import { isTreatmentPlansReorderTest } from 'calypso/state/marketing/selectors';
 import './style.scss';
 
 export class PlansStep extends Component {
+	state = {
+		plansWithScroll: false,
+	};
+
+	windowResize = () => {
+		this.setState( { plansWithScroll: window.innerWidth > 1035 } );
+	};
+
+	componentWillUnmount() {
+		window.removeEventListener( 'resize', this.windowResize );
+	}
+
 	componentDidMount() {
+		window.addEventListener( 'resize', this.windowResize );
 		this.props.saveSignupStep( { stepName: this.props.stepName } );
 	}
 
@@ -160,7 +173,7 @@ export class PlansStep extends Component {
 					domainName={ this.getDomainName() }
 					customerType={ this.getCustomerType() }
 					disableBloggerPlanWithNonBlogDomain={ disableBloggerPlanWithNonBlogDomain }
-					plansWithScroll={ true }
+					plansWithScroll={ this.state.plansWithScroll }
 					planTypes={ planTypes }
 					flowName={ flowName }
 					customHeader={ this.getGutenboardingHeader() }

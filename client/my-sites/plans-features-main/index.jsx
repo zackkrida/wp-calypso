@@ -61,7 +61,6 @@ import ProductSelector from 'calypso/blocks/product-selector';
 import FormattedHeader from 'calypso/components/formatted-header';
 import HappychatConnection from 'calypso/components/happychat/connection-connected';
 import isHappychatAvailable from 'calypso/state/happychat/selectors/is-happychat-available';
-import { getDiscountByName } from 'calypso/lib/discounts';
 import { getDomainsBySiteId } from 'calypso/state/sites/domains/selectors';
 import {
 	getSitePlan,
@@ -71,7 +70,6 @@ import {
 } from 'calypso/state/sites/selectors';
 import getPreviousRoute from 'calypso/state/selectors/get-previous-route';
 import { getTld } from 'calypso/lib/domains';
-import { isDiscountActive } from 'calypso/state/selectors/get-active-discount.js';
 import { selectSiteId as selectHappychatSiteId } from 'calypso/state/help/actions';
 import { getABTestVariation } from 'calypso/lib/abtest';
 import PlanTypeSelector from './plan-type-selector';
@@ -328,9 +326,7 @@ export class PlansFeaturesMain extends Component {
 		}
 
 		if ( ! withWPPlanTabs ) {
-			return plans.filter( ( plan ) =>
-				isPlanOneOfType( plan, [ TYPE_FREE, TYPE_PERSONAL, TYPE_PREMIUM, TYPE_BUSINESS ] )
-			);
+			return plans;
 		}
 
 		if ( customerType === 'personal' && this.isPersonalCustomerTypePlanVisible() ) {
@@ -513,7 +509,7 @@ export default connect(
 			// during the signup, and we're going to remove the code soon after the test. Also, since this endpoint is
 			// pretty versatile, we could rename it from discounts to flags/features/anything else and make it more
 			// universal.
-			withWPPlanTabs: isDiscountActive( getDiscountByName( 'new_plans' ), state ),
+			withWPPlanTabs: false,
 			plansWithScroll: ! props.displayJetpackPlans && props.plansWithScroll,
 			customerType,
 			domains: getDomainsBySiteId( state, siteId ),
