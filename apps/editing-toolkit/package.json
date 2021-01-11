@@ -120,7 +120,7 @@
 		"@wordpress/dependency-extraction-webpack-plugin": "^2.8.0",
 		"@wordpress/dom-ready": "*",
 		"@wordpress/e2e-test-utils": "^4.11.2",
-		"@wordpress/edit-post": "^3.26.1",
+		"@wordpress/edit-post": "*",
 		"@wordpress/editor": "*",
 		"@wordpress/element": "*",
 		"@wordpress/env": "^2.1.0",
@@ -155,7 +155,6 @@
 	},
 	"devDependencies": {
 		"@babel/preset-typescript": "^7.12.1",
-		"@types/wordpress__edit-post": "^3.5.4",
 		"@types/wordpress__plugins": "^2.3.6",
 		"@wordpress/eslint-plugin": "^7.1.0",
 		"babel-jest": "^26.3.0",
