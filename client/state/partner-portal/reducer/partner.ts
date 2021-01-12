@@ -16,24 +16,39 @@ import { combineReducers, withoutPersistence, withSchemaValidation } from 'calyp
 import filter from 'lodash/filter';
 
 export const initialState = {
+	hasFetched: false,
 	isFetching: false,
 	activePartnerKey: 0,
 	current: null,
 	error: '',
 };
 
-export const isFetching = withoutPersistence( ( state = initialState.isFetching, action: AnyAction ) => {
-	switch ( action.type ) {
-		case JETPACK_PARTNER_PORTAL_PARTNER_REQUEST:
-			return true;
+export const hasFetched = withoutPersistence(
+	( state = initialState.isFetching, action: AnyAction ) => {
+		switch ( action.type ) {
+			case JETPACK_PARTNER_PORTAL_PARTNER_REQUEST_SUCCESS:
+			case JETPACK_PARTNER_PORTAL_PARTNER_REQUEST_FAILURE:
+				return true;
+		}
 
-		case JETPACK_PARTNER_PORTAL_PARTNER_REQUEST_SUCCESS:
-		case JETPACK_PARTNER_PORTAL_PARTNER_REQUEST_FAILURE:
-			return false;
+		return state;
 	}
+);
 
-	return state;
-} );
+export const isFetching = withoutPersistence(
+	( state = initialState.isFetching, action: AnyAction ) => {
+		switch ( action.type ) {
+			case JETPACK_PARTNER_PORTAL_PARTNER_REQUEST:
+				return true;
+
+			case JETPACK_PARTNER_PORTAL_PARTNER_REQUEST_SUCCESS:
+			case JETPACK_PARTNER_PORTAL_PARTNER_REQUEST_FAILURE:
+				return false;
+		}
+
+		return state;
+	}
+);
 
 export const activePartnerKey = withSchemaValidation(
 	{
@@ -73,6 +88,7 @@ export const error = withoutPersistence( ( state = initialState.error, action: A
 } );
 
 export default combineReducers( {
+	hasFetched,
 	isFetching,
 	activePartnerKey,
 	current,
