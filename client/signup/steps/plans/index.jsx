@@ -244,6 +244,7 @@ export class PlansStep extends Component {
 
 	render() {
 		const classes = classNames( 'plans plans-step', {
+			'in-vertically-scrolled-plans-on-mobile-experiment-variant': true,
 			'has-no-sidebar': true,
 			'is-wide-layout': true,
 		} );

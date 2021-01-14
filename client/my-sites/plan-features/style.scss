@@ -1,6 +1,57 @@
 $plan-features-header-banner-height: 20px;
 $plan-features-sidebar-width: 272px;
 
+/*
+	Vertical Scroll Experiment
+*/
+.in-vertically-scrolled-plans-on-mobile-experiment-variant {
+	// If experiment succeeds the following styles
+	// need to be moved to the corresponding selectors
+
+	// To be moved to line 651 approximately
+	.plan-features--signup {
+		.plan-features__table {
+			@media ( max-width: 1040px ) {
+				display: none;
+			}
+		}
+
+		//To be moved to line 66 approximately
+		.plan-features__mobile {
+			@media ( min-width: 660px ) and ( max-width: 1040px ) {
+				.plan-features__summary, .plan-features__description {
+					padding: 16px 33px;
+
+				}
+				.plan-features--signup .plan-features__pricing {
+					padding: 0 7px;
+
+				}
+			}
+
+			@media ( max-width: 1040px ) {
+				display: block;
+			}
+
+			//To be moved to line 904 approximately
+			.plan-price.plan-price {
+				font-weight: 600;
+				margin-right: 10px;
+				font-size: $font-headline-large;
+				font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+			}
+
+			//To be moved to line 686 approximately
+			.plan-features__graphic {
+				display: none;
+			}
+		}
+
+	}
+}
+
+
+
 /* Breakpoints 1150px, */
 
 .plan-features__content {
