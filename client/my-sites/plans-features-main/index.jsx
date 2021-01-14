@@ -146,6 +146,7 @@ export class PlansFeaturesMain extends Component {
 			siteId,
 			plansWithScroll,
 			isReskinned,
+			isInVerticalScrollingPlansExperiment,
 		} = this.props;
 
 		const plans = this.getPlansForPlanFeatures();
@@ -202,6 +203,7 @@ export class PlansFeaturesMain extends Component {
 					} ) }
 					siteId={ siteId }
 					isReskinned={ isReskinned }
+					isInVerticalScrollingPlansExperiment={ isInVerticalScrollingPlansExperiment }
 				/>
 			</div>
 		);

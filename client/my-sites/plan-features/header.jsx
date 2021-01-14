@@ -36,7 +36,12 @@ import { planLevelsMatch } from 'calypso/lib/plans/index';
 
 export class PlanFeaturesHeader extends Component {
 	render() {
-		const { isInSignup, plansWithScroll, planType } = this.props;
+		const {
+			isInSignup,
+			plansWithScroll,
+			planType,
+			isInVerticalScrollingPlansExperiment,
+		} = this.props;
 
 		if ( planType === PLAN_P2_FREE ) {
 			return this.renderPlansHeaderP2Free();
@@ -46,9 +51,11 @@ export class PlanFeaturesHeader extends Component {
 		if ( plansWithScroll ) {
 			return this.renderPlansHeaderNoTabs();
 		} else if ( isInSignup ) {
+			if ( isInVerticalScrollingPlansExperiment ) {
+				return this.renderPlansHeader();
+			}
 			return this.renderSignupHeader();
 		}
-
 		return this.renderPlansHeader();
 	}
 
