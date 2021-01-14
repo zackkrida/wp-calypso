@@ -35,6 +35,7 @@
 	"dependencies": {
 		"@wordpress/api-fetch": "^3.18.0",
 		"@wordpress/data-controls": "^1.16.3",
+		"@wordpress/deprecated": "^2.11.0",
 		"@wordpress/url": "^2.17.0",
 		"fast-json-stable-stringify": "^2.1.0",
 		"i18n-calypso": "^5.0.0",
