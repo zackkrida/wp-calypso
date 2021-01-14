@@ -16,6 +16,8 @@ $plan-features-sidebar-width: 272px;
 			}
 		}
 
+
+
 		//To be moved to line 66 approximately
 		.plan-features__mobile {
 			@media ( min-width: 660px ) and ( max-width: 1040px ) {
@@ -31,6 +33,12 @@ $plan-features-sidebar-width: 272px;
 
 			@media ( max-width: 1040px ) {
 				display: block;
+			}
+
+			.plan-features__pricing .plan-price__currency-symbol {
+				vertical-align: super;
+				font-size: 1.5rem;
+				font-weight: 400;
 			}
 
 			//To be moved to line 904 approximately

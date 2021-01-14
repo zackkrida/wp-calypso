@@ -37,7 +37,7 @@ import { isTreatmentPlansReorderTest } from 'calypso/state/marketing/selectors';
 import './style.scss';
 
 function isMobileResolution() {
-	return window.innerWidth < 1035;
+	return window.innerWidth < 1040;
 }
 
 export class PlansStep extends Component {
