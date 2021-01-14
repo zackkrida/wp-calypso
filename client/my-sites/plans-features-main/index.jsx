@@ -306,7 +306,13 @@ export class PlansFeaturesMain extends Component {
 	}
 
 	getVisiblePlansForPlanFeatures( plans ) {
-		const { displayJetpackPlans, customerType, plansWithScroll, withWPPlanTabs } = this.props;
+		const {
+			displayJetpackPlans,
+			customerType,
+			plansWithScroll,
+			withWPPlanTabs,
+			showAllPlans,
+		} = this.props;
 
 		const isPlanOneOfType = ( plan, types ) =>
 			types.filter( ( type ) => planMatches( plan, { type } ) ).length > 0;
@@ -327,7 +333,7 @@ export class PlansFeaturesMain extends Component {
 			);
 		}
 
-		if ( ! withWPPlanTabs ) {
+		if ( showAllPlans || ! withWPPlanTabs ) {
 			return plans.filter( ( plan ) =>
 				isPlanOneOfType( plan, [
 					TYPE_FREE,
@@ -477,6 +483,7 @@ PlansFeaturesMain.propTypes = {
 	siteId: PropTypes.number,
 	siteSlug: PropTypes.string,
 	withWPPlanTabs: PropTypes.bool,
+	showAllPlans: PropTypes.bool,
 	plansWithScroll: PropTypes.bool,
 	planTypes: PropTypes.array,
 	customHeader: PropTypes.node,

@@ -182,6 +182,7 @@ export class PlansStep extends Component {
 					flowName={ flowName }
 					customHeader={ this.getGutenboardingHeader() }
 					showTreatmentPlansReorderTest={ showTreatmentPlansReorderTest }
+					showAllPlans={ true }
 				/>
 			</div>
 		);
