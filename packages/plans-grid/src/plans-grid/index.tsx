@@ -67,9 +67,9 @@ const PlansGrid: React.FunctionComponent< Props > = ( {
 		'ANNUALLY'
 	);
 
-	const [ maxAnnuallySavingPerc, setMaxAnnuallySavingPerc ] = React.useState< number | undefined >(
-		undefined
-	);
+	const [ maxMonhtlyDiscountPercentage, setMaxMonhtlyDiscountPercentage ] = React.useState<
+		number | undefined
+	>( undefined );
 
 	isAccordion && debug( 'PlansGrid accordion version is active' );
 
@@ -80,7 +80,7 @@ const PlansGrid: React.FunctionComponent< Props > = ( {
 			<PlansIntervalToggle
 				intervalType={ billingInterval }
 				onChange={ setBillingInterval }
-				maxSavingsPerc={ maxAnnuallySavingPerc }
+				maxMonhtlyDiscountPercentage={ maxMonhtlyDiscountPercentage }
 				className="plans-grid__toggle"
 			/>
 
