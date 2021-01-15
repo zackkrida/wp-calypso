@@ -68,15 +68,15 @@ export class PlanPrice extends Component {
 			const higherPrice = priceRange[ 1 ] && renderPrice( priceRange[ 1 ] );
 
 			return (
-				<h4 className={ classes }>
-					<sup className="plan-price__currency-symbol">{ priceRange[ 0 ].price.symbol }</sup>
+				<span className={ classes }>
+					{ priceRange[ 0 ].price.symbol }
 					{ ! higherPrice && renderPrice( priceRange[ 0 ] ) }
 					{ higherPrice &&
 						translate( '%(smallerPrice)s-%(higherPrice)s', {
 							args: { smallerPrice, higherPrice },
 							comment: 'The price range for a particular product',
 						} ) }
-				</h4>
+				</span>
 			);
 		}
 
