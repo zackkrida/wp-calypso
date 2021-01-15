@@ -36,11 +36,15 @@ import { isTreatmentPlansReorderTest } from 'calypso/state/marketing/selectors';
  */
 import './style.scss';
 import { Experiment } from 'calypso/components/experiment';
+// eslint-disable-next-line
 import { getVariationForUser, isLoading } from 'calypso/state/experiments/selectors';
 import PulsingDot from 'calypso/components/pulsing-dot';
 
 function isMobileResolution() {
-	return window.innerWidth < 1040;
+	if ( typeof window === 'object' ) {
+		return window.innerWidth < 1040;
+	}
+	return false;
 }
 
 export class PlansStep extends Component {
@@ -53,11 +57,15 @@ export class PlansStep extends Component {
 	};
 
 	componentWillUnmount() {
-		window.removeEventListener( 'resize', this.windowResize );
+		if ( typeof window === 'object' ) {
+			window.removeEventListener( 'resize', this.windowResize );
+		}
 	}
 
 	componentDidMount() {
-		window.addEventListener( 'resize', this.windowResize );
+		if ( typeof window === 'object' ) {
+			window.addEventListener( 'resize', this.windowResize );
+		}
 		this.props.saveSignupStep( { stepName: this.props.stepName } );
 	}
 
