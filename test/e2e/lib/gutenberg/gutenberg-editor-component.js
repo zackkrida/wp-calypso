@@ -42,17 +42,13 @@ export default class GutenbergEditorComponent extends AsyncBaseContainer {
 		if ( this.editorType !== 'iframe' ) {
 			return;
 		}
+		await this.driver.sleep( 5000 );
 		await this.driver.switchTo().defaultContent();
 		await this.driver.wait(
 			until.ableToSwitchToFrame( this.editoriFrameSelector ),
 			this.explicitWaitMS,
 			'Could not locate the editor iFrame.'
 		);
-		await this.driver.sleep( 5000 );
-	}
-
-	async _postInit() {
-		await this.driver.sleep( 2000 );
 	}
 
 	async initEditor( { dismissPageTemplateSelector = false } = {} ) {
