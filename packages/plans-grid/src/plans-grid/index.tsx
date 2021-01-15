@@ -95,6 +95,8 @@ const PlansGrid: React.FunctionComponent< Props > = ( {
 							onPickDomainClick={ onPickDomainClick }
 							disabledPlans={ disabledPlans }
 							locale={ locale }
+							billingInterval={ billingInterval }
+							onMaxMonhtlyDiscountPercentageChange={ setMaxMonhtlyDiscountPercentage }
 						></PlansAccordion>
 					) : (
 						<PlansTable
@@ -109,6 +111,8 @@ const PlansGrid: React.FunctionComponent< Props > = ( {
 							locale={ locale }
 							showTaglines={ showPlanTaglines }
 							defaultAllPlansExpanded={ defaultAllPlansExpanded }
+							billingInterval={ billingInterval }
+							onMaxMonhtlyDiscountPercentageChange={ setMaxMonhtlyDiscountPercentage }
 						></PlansTable>
 					) }
 				</div>

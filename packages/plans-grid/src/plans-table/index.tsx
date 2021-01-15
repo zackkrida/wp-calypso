@@ -10,6 +10,7 @@ import type { DomainSuggestions } from '@automattic/data-stores';
  */
 import PlanItem from './plan-item';
 import { PLANS_STORE } from '../constants';
+import type { BillingIntervalType } from '../plans-interval-toggle';
 import type { CTAVariation, PopularBadgeVariation, CustomTagLinesMap } from './types';
 
 /**
@@ -29,6 +30,8 @@ export interface Props {
 	popularBadgeVariation: PopularBadgeVariation;
 	customTagLines?: CustomTagLinesMap;
 	defaultAllPlansExpanded?: boolean;
+	billingInterval: BillingIntervalType;
+	onMaxMonhtlyDiscountPercentageChange: ( perc: number | undefined ) => void;
 }
 
 const PlansTable: React.FunctionComponent< Props > = ( {
