@@ -14,6 +14,7 @@ import type { CTAVariation, PopularBadgeVariation } from './types';
  * Internal dependencies
  */
 import PlansFeatureList from '../plans-feature-list';
+import type { BillingIntervalType } from '../plans-interval-toggle';
 
 // TODO: remove when all needed core types are available
 /*#__PURE__*/ import '../types-patch';
@@ -42,6 +43,8 @@ export interface Props {
 	price: string;
 	tagline?: string | false;
 	features: Array< string >;
+	billingInterval: BillingIntervalType;
+	annuallyDiscountPercentage: number;
 	domain?: DomainSuggestions.DomainSuggestion;
 	isPopular?: boolean;
 	isFree?: boolean;
@@ -67,6 +70,8 @@ const PlanItem: React.FunctionComponent< Props > = ( {
 	isFree = false,
 	domain,
 	features,
+	billingInterval,
+	// annuallyDiscountPercentage,
 	onSelect,
 	onPickDomainClick,
 	onToggleExpandAll,
@@ -185,6 +190,7 @@ const PlanItem: React.FunctionComponent< Props > = ( {
 								disabledLabel &&
 								sprintf( __( '%s is not included', __i18n_text_domain__ ), domain?.domain_name )
 							}
+							billingInterval={ billingInterval }
 						/>
 					</div>
 				</div>
