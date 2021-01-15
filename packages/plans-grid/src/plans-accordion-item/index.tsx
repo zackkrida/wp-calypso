@@ -11,6 +11,7 @@ import type { DomainSuggestions } from '@automattic/data-stores';
  * Internal dependencies
  */
 import PlansFeatureList from '../plans-feature-list';
+import type { BillingIntervalType } from '../plans-interval-toggle';
 
 /**
  * Style dependencies
@@ -31,6 +32,7 @@ export interface Props {
 	description: string;
 	price: string;
 	features: Array< string >;
+	billingInterval: BillingIntervalType;
 	domain?: DomainSuggestions.DomainSuggestion;
 	badge?: string;
 	isFree?: boolean;
@@ -49,6 +51,7 @@ const PlanItem: React.FunctionComponent< Props > = ( {
 	description,
 	price,
 	features,
+	billingInterval,
 	domain,
 	badge,
 	isFree = false,
@@ -134,6 +137,7 @@ const PlanItem: React.FunctionComponent< Props > = ( {
 					</div>
 					<PlansFeatureList
 						features={ features }
+						billingInterval={ billingInterval }
 						domain={ domain }
 						isFree={ isFree }
 						isOpen={ isOpen }

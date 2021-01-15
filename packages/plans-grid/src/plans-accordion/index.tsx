@@ -49,11 +49,22 @@ const PlansTable: React.FunctionComponent< Props > = ( {
 	currentDomain,
 	disabledPlans,
 	locale,
+	billingInterval,
+	onMaxMonhtlyDiscountPercentageChange,
 } ) => {
 	const { __ } = useI18n();
 
+	// TODO: use billingInterval to query the correct plans (ANNUALLY or MONTHLY)
 	const supportedPlans = useSelect( ( select ) => select( PLANS_STORE ).getSupportedPlans() );
 	const prices = useSelect( ( select ) => select( PLANS_STORE ).getPrices( locale ) );
+
+	// TODO: replace tempDiscountPlaceholder with a call to the new data-store selector
+	// to get the annually vs monthly discount for each plan
+	// TODO: when discounts data updates, call onMaxMonhtlyDiscountPercentageChange prop
+	const tempDiscountPlaceholder = 43;
+	React.useEffect( () => {
+		onMaxMonhtlyDiscountPercentageChange( tempDiscountPlaceholder );
+	}, [ onMaxMonhtlyDiscountPercentageChange, tempDiscountPlaceholder ] );
 
 	const isLoading = ! supportedPlans?.length;
 	const placeholderPlans = [ 1, 2, 3, 4 ];
@@ -115,6 +126,7 @@ const PlansTable: React.FunctionComponent< Props > = ( {
 								name={ primaryPlan?.title.toString() }
 								description={ primaryPlan?.description.toString() }
 								features={ primaryPlan.features ?? [] }
+								billingInterval={ billingInterval }
 								price={ prices[ primaryPlan.storeSlug ] }
 								domain={ currentDomain }
 								badge={ badge }
@@ -150,6 +162,7 @@ const PlansTable: React.FunctionComponent< Props > = ( {
 								name={ plan?.title.toString() }
 								description={ plan?.description.toString() }
 								features={ plan.features ?? [] }
+								billingInterval={ billingInterval }
 								price={ prices[ plan.storeSlug ] }
 								domain={ currentDomain }
 								isFree={ plan.isFree }
