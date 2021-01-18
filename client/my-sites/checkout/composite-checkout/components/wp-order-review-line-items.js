@@ -63,17 +63,18 @@ function WPLineItem( {
 		( state ) =>
 			getCurrentUser( state ) && currentUserHasFlag( state, NON_PRIMARY_DOMAINS_TO_FREE_USERS )
 	);
+	const isRenewal = item.wpcom_meta?.extra?.purchaseId;
 	const modalCopy = returnModalCopy(
 		item.type,
 		translate,
 		hasDomainsInCart,
 		createUserAndSiteBeforeTransaction,
-		isPwpoUser
+		isPwpoUser,
+		isRenewal
 	);
 	const onEvent = useEvents();
 	const isDisabled = formStatus !== FormStatus.READY;
 
-	const isRenewal = item.wpcom_meta?.extra?.purchaseId;
 	// Show the variation picker when this is not a renewal
 	const shouldShowVariantSelector = getItemVariants && item.wpcom_meta && ! isRenewal;
 
@@ -456,7 +457,8 @@ function returnModalCopy(
 	translate,
 	hasDomainsInCart,
 	createUserAndSiteBeforeTransaction,
-	isPwpoUser
+	isPwpoUser,
+	isRenewal
 ) {
 	const modalCopy = {};
 	const productType = product === 'plan' && hasDomainsInCart ? 'plan with dependencies' : product;
@@ -487,10 +489,17 @@ function returnModalCopy(
 				  );
 			break;
 		case 'domain':
-			modalCopy.title = translate( 'You are about to remove your domain from the cart' );
-			modalCopy.description = translate(
-				'When you press Continue, we will remove your domain from the cart and you will have no claim for the domain name you picked.'
-			);
+			if ( isRenewal ) {
+				modalCopy.title = translate( 'You are about to remove your domain renewal from the cart' );
+				modalCopy.description = translate(
+					'When you press Continue, we will remove your domain renewal from the cart and your domain will keep its current expiry date.'
+				);
+			} else {
+				modalCopy.title = translate( 'You are about to remove your domain from the cart' );
+				modalCopy.description = translate(
+					'When you press Continue, we will remove your domain from the cart and you will have no claim for the domain name you picked.'
+				);
+			}
 			break;
 		case 'coupon':
 			modalCopy.title = translate( 'You are about to remove your coupon from the cart' );
@@ -499,12 +508,19 @@ function returnModalCopy(
 			);
 			break;
 		default:
-			modalCopy.title = translate( 'You are about to remove your product from the cart' );
-			modalCopy.description = createUserAndSiteBeforeTransaction
-				? 'When you press Continue, we will remove your product from the cart.'
-				: translate(
-						'When you press Continue, we will remove your product from the cart and your site will continue to run without it.'
-				  );
+			if ( isRenewal ) {
+				modalCopy.title = translate( 'You are about to remove your renewal from the cart' );
+				modalCopy.description = translate(
+					'When you press Continue, we will remove your renewal from the cart and your product will keep its current expiry date.'
+				);
+			} else {
+				modalCopy.title = translate( 'You are about to remove your product from the cart' );
+				modalCopy.description = createUserAndSiteBeforeTransaction
+					? 'When you press Continue, we will remove your product from the cart.'
+					: translate(
+							'When you press Continue, we will remove your product from the cart and your site will continue to run without it.'
+					  );
+			}
 	}
 
 	return modalCopy;
