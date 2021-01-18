@@ -53,7 +53,7 @@ registerPlugin( 'a8c-editor-site-launch', {
 						openCheckout,
 					} }
 				>
-					<LaunchModal onClose={ closeSidebar } />
+					<LaunchModal onClose={ closeSidebar } isLaunchImmediately />
 				</LaunchContext.Provider>
 			</LocaleProvider>
 		);
