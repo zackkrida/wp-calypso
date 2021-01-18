@@ -97,6 +97,11 @@ export const enableExperimental = () =>
 		type: 'ENABLE_EXPERIMENTAL',
 	} as const );
 
+export const enableAnchorFm = () =>
+	( {
+		type: 'ENABLE_ANCHOR_FM',
+	} as const );
+
 export const showSiteTitleStep = () =>
 	( {
 		type: 'SHOW_SITE_TITLE_STEP',
@@ -146,6 +151,7 @@ export type LaunchAction = ReturnType<
 	| typeof openSidebar
 	| typeof closeSidebar
 	| typeof enableExperimental
+	| typeof enableAnchorFm
 	| typeof setSidebarFullscreen
 	| typeof unsetSidebarFullscreen
 	| typeof showSiteTitleStep

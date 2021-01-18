@@ -35,6 +35,7 @@ export function register(): typeof STORE_KEY {
 				'plan',
 				'confirmedDomainSelection',
 				'isExperimental',
+				'isAnchorFm',
 				'isSiteTitleStepVisible',
 				'shouldDisplaySuccessView',
 			],

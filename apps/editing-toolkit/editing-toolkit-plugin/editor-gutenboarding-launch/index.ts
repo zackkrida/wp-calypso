@@ -115,6 +115,11 @@ function updateEditor() {
 				// TODO: update this in calypsoify-iframe.tsx depending on abtest or other conditions.
 				isExperimental && dispatch( 'automattic/launch' ).enableExperimental();
 
+				// Enable Anchor-Flavored Gutenboarding features (The launch button works immediately).
+				if ( isGutenboardingAnchorFm ) {
+					dispatch( 'automattic/launch' ).enableAnchorFm();
+				}
+
 				// Open editor-site-launch sidebar
 				dispatch( 'automattic/launch' ).openSidebar();
 				setTimeout( () => {
