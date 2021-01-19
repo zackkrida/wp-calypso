@@ -46,7 +46,7 @@
 		"@testing-library/react": "^10.0.5",
 		"cache-loader": "^4.1.0",
 		"react-dom": "^16.12.0",
-		"webpack": "^4.44.2"
+		"webpack": "^5.16.0"
 	},
 	"private": true
 }
