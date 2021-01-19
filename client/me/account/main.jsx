@@ -624,16 +624,21 @@ const Account = createReactClass( {
 		return <FormTextValidation isError={ true } text={ notice } />;
 	},
 
+	shouldDisabledSubmitButton() {
+		const { userSettings } = this.props;
+
+		return (
+			! userSettings.hasUnsavedSettings() ||
+			this.getDisabledState() ||
+			this.hasEmailValidationError()
+		);
+	},
+
 	/*
 	 * These form fields are displayed when there is not a username change in progress.
 	 */
 	renderAccountFields() {
-		const { translate, userSettings } = this.props;
-
-		const isSubmitButtonDisabled =
-			! userSettings.hasUnsavedSettings() ||
-			this.getDisabledState() ||
-			this.hasEmailValidationError();
+		const { translate } = this.props;
 
 		return (
 			<div className="account__settings-form" key="settingsForm">
@@ -676,47 +681,9 @@ const Account = createReactClass( {
 					</FormSettingExplanation>
 				</FormFieldset>
 
-				<FormFieldset>
-					<FormLabel id="account__language" htmlFor="language">
-						{ translate( 'Interface language' ) }
-					</FormLabel>
-					<LanguagePicker
-						disabled={ this.getDisabledState() }
-						languages={ languages }
-						onClick={ this.getClickHandler( 'Interface Language Field' ) }
-						valueKey="langSlug"
-						value={
-							this.getUserSetting( 'locale_variant' ) || this.getUserSetting( 'language' ) || ''
-						}
-						empathyMode={ this.getUserSetting( 'i18n_empathy_mode' ) }
-						useFallbackForIncompleteLanguages={ this.getUserSetting(
-							'use_fallback_for_incomplete_languages'
-						) }
-						onChange={ this.updateLanguage }
-					/>
-					<FormSettingExplanation>
-						{ translate(
-							'This is the language of the interface you see across WordPress.com as a whole.'
-						) }
-					</FormSettingExplanation>
-					{ this.thankTranslationContributors() }
-				</FormFieldset>
-
-				{ canDisplayCommunityTranslator( this.getUserSetting( 'language' ) ) &&
-					this.communityTranslator() }
-
-				{ config.isEnabled( 'me/account/color-scheme-picker' ) && supportsCssCustomProperties() && (
-					<FormFieldset>
-						<FormLabel id="account__color_scheme" htmlFor="color_scheme">
-							{ translate( 'Dashboard color scheme' ) }
-						</FormLabel>
-						<ColorSchemePicker temporarySelection onSelection={ this.updateColorScheme } />
-					</FormFieldset>
-				) }
-
 				<FormButton
 					isSubmitting={ this.state.submittingForm }
-					disabled={ isSubmitButtonDisabled }
+					disabled={ this.shouldDisabledSubmitButton() }
 					onClick={ this.handleSubmitButtonClick }
 				>
 					{ this.state.submittingForm
@@ -882,13 +849,14 @@ const Account = createReactClass( {
 			<Main className="account is-wide-layout">
 				<PageViewTracker path="/me/account" title="Me > Account Settings" />
 				<MeSidebarNavigation />
-				{ false && <ReauthRequired twoStepAuthorization={ twoStepAuthorization } /> }
+				<ReauthRequired twoStepAuthorization={ twoStepAuthorization } />
 				<FormattedHeader brandFont headerText={ translate( 'Account Settings' ) } align="left" />
 
 				<Card className="account__settings">
 					<CardHeading className="account__settings-card-header" tagName="h2" size={ 14 }>
 						{ translate( 'Account Information' ) }
 					</CardHeading>
+
 					<form onChange={ markChanged } onSubmit={ this.submitForm }>
 						<FormFieldset>
 							<FormLabel htmlFor="user_login">{ translate( 'Username' ) }</FormLabel>
@@ -928,16 +896,54 @@ const Account = createReactClass( {
 						{ translate( 'Interface Settings' ) }
 					</CardHeading>
 					<form onChange={ markChanged } onSubmit={ this.submitForm }>
-						{ /* This is how we animate showing/hiding the form field sections */ }
-						<TransitionGroup>
-							<CSSTransition
-								key={ renderUsernameForm ? 'username' : 'account' }
-								classNames="account__username-form-toggle"
-								timeout={ { enter: 500, exit: 10 } }
-							>
-								{ this.renderAccountFields() }
-							</CSSTransition>
-						</TransitionGroup>
+						<FormFieldset>
+							<FormLabel id="account__language" htmlFor="language">
+								{ translate( 'Interface language' ) }
+							</FormLabel>
+							<LanguagePicker
+								disabled={ this.getDisabledState() }
+								languages={ languages }
+								onClick={ this.getClickHandler( 'Interface Language Field' ) }
+								valueKey="langSlug"
+								value={
+									this.getUserSetting( 'locale_variant' ) || this.getUserSetting( 'language' ) || ''
+								}
+								empathyMode={ this.getUserSetting( 'i18n_empathy_mode' ) }
+								useFallbackForIncompleteLanguages={ this.getUserSetting(
+									'use_fallback_for_incomplete_languages'
+								) }
+								onChange={ this.updateLanguage }
+							/>
+							<FormSettingExplanation>
+								{ translate(
+									'This is the language of the interface you see across WordPress.com as a whole.'
+								) }
+							</FormSettingExplanation>
+							{ this.thankTranslationContributors() }
+						</FormFieldset>
+
+						{ canDisplayCommunityTranslator( this.getUserSetting( 'language' ) ) &&
+							this.communityTranslator() }
+
+						{ config.isEnabled( 'me/account/color-scheme-picker' ) &&
+							supportsCssCustomProperties() && (
+								<FormFieldset>
+									<FormLabel id="account__color_scheme" htmlFor="color_scheme">
+										{ translate( 'Dashboard color scheme' ) }
+									</FormLabel>
+									<ColorSchemePicker temporarySelection onSelection={ this.updateColorScheme } />
+								</FormFieldset>
+							) }
+
+						<FormButton
+							isSubmitting={ this.state.submittingForm }
+							disabled={ this.shouldDisabledSubmitButton() }
+							onClick={ this.handleSubmitButtonClick }
+						>
+							{ this.state.submittingForm
+								? translate( 'Saving…' )
+								: translate( 'Save account settings' ) }
+						</FormButton>
 					</form>
 				</Card>
 
