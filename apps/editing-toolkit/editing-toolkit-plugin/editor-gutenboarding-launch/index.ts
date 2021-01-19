@@ -39,8 +39,6 @@ let handled = false;
 function updateEditor() {
 	const isGutenboarding = window?.calypsoifyGutenberg?.isGutenboarding;
 	const isGutenboardingAnchorFm = window?.calypsoifyGutenberg?.isGutenboardingAnchorFm;
-	// eslint-disable-next-line no-console
-	console.log( 'made it to FSE/ETK', { isGutenboardingAnchorFm } );
 
 	if (
 		// Don't proceed if this function has already run
