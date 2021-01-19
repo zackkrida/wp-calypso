@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
  * Internal dependencies
  */
 import LanguagePicker from 'calypso/components/language-picker';
+import SectionHeader from 'calypso/components/section-header';
 import MeSidebarNavigation from 'calypso/me/sidebar-navigation';
 import { protectForm } from 'calypso/lib/protect-form';
 import formBase from 'calypso/me/form-base';
@@ -852,11 +853,8 @@ const Account = createReactClass( {
 				<ReauthRequired twoStepAuthorization={ twoStepAuthorization } />
 				<FormattedHeader brandFont headerText={ translate( 'Account Settings' ) } align="left" />
 
+				<SectionHeader label={ translate( 'Account Information' ) } />
 				<Card className="account__settings">
-					<CardHeading className="account__settings-card-header" tagName="h2" size={ 14 }>
-						{ translate( 'Account Information' ) }
-					</CardHeading>
-
 					<form onChange={ markChanged } onSubmit={ this.submitForm }>
 						<FormFieldset>
 							<FormLabel htmlFor="user_login">{ translate( 'Username' ) }</FormLabel>
@@ -891,10 +889,8 @@ const Account = createReactClass( {
 					</form>
 				</Card>
 
+				<SectionHeader label={ translate( 'Interface Settings' ) } />
 				<Card className="account__settings">
-					<CardHeading className="account__settings-card-header" tagName="h2" size={ 14 }>
-						{ translate( 'Interface Settings' ) }
-					</CardHeading>
 					<form onChange={ markChanged } onSubmit={ this.submitForm }>
 						<FormFieldset>
 							<FormLabel id="account__language" htmlFor="language">
@@ -942,7 +938,7 @@ const Account = createReactClass( {
 						>
 							{ this.state.submittingForm
 								? translate( 'Saving…' )
-								: translate( 'Save account settings' ) }
+								: translate( 'Save interface settings' ) }
 						</FormButton>
 					</form>
 				</Card>
