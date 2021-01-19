@@ -98,8 +98,16 @@ function updateEditor() {
 			 * If the site was created via New Onboarding flow (starting at /new) with a free plan,
 			 * the control launch flow gets replaced by the "Step by Step" launch flow,
 			 * displayed in a modal on top of the editor (no redirect needed)
+			 *
+			 * Anchor.FM flavored Gutenboarding will always use "Step by Step" launch.
+			 *    - Generally, it should already be covered by the gutenboarding+free conditions,
+			 *      but I wanted to make it more robust to changes in the future, like A/B tests.
+			 *    - "Step By Step" launch has extra code that checks for Anchor flavored gutenboarding,
+			 *      and makes the launch instant without asking for more user selections. If Anchor users
+			 *      are moved to another launch flow they will lose this customization.
 			 */
-			const shouldOpenStepByStepLaunch = isGutenboarding && getIsFreePlan();
+			const shouldOpenStepByStepLaunch =
+				( isGutenboarding && getIsFreePlan() ) || isGutenboardingAnchorFm;
 
 			// This currently comes from a feature flag, but should eventually be
 			// replaced with A/B testing logic
